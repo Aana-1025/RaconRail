@@ -30,7 +30,8 @@ def execute(suite, task, *, root=ROOT, run=subprocess.run):
         return finish(2,'BLOCKED','Unknown task')
     if suite not in manifest['suites']:
         return finish(2,'BLOCKED','Unknown suite')
-    chosen=manifest['suites'][suite]
+    chosen=manifest.get('task_suites',{}).get(task,{}).get(suite,manifest['suites'][suite])
+    record['suite_scope']=chosen.get('scope','Full named suite')
     # Resolve all required commands before doing work; never skip a missing command.
     if chosen['status']!='IMPLEMENTED':
         return finish(2,'BLOCKED',chosen.get('reason','Suite unavailable'))
@@ -50,7 +51,7 @@ def execute(suite, task, *, root=ROOT, run=subprocess.run):
         substitutions={'python':sys.executable,'java':str(java),'javac':str(javac),'node':str(node),'npm_cli':str(npm_cli),'npm_cache':str(root/'.local-tools/npm-cache'),'maven_repo':str(root/'.local-tools/m2/repository'),'wrapper':str(root/('mvnw.cmd' if os.name=='nt' else 'mvnw'))}
         for ident in chosen['commands']:
             spec=manifest['commands'][ident];argv=[a.format(**substitutions) for a in spec['argv']]
-            if ident=='maven-verify' and os.name!='nt':argv=['sh',*argv]
+            if spec['argv'][0]=='{wrapper}' and os.name!='nt':argv=['sh',*argv]
             entry={'id':ident,'argv':argv,'started_at':stamp()};record['commands'].append(entry)
             with (output/(ident+'.log')).open('w',encoding='utf-8') as log:
                 result=run(argv,cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1200)

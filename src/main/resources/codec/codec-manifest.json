@@ -1,0 +1,1458 @@
+{
+  "version": 1,
+  "presence": {
+    "absent": 0,
+    "null": 1,
+    "value": 2
+  },
+  "tags": {
+    "text": 1,
+    "integer": 2,
+    "uuid": 3,
+    "timestamp": 4,
+    "boolean": 5,
+    "bytes": 6,
+    "list": 7,
+    "object": 8
+  },
+  "framing": "Root: ASCII domain + NUL + uint32BE version + object contents. Object contents: uint32BE field count, schema order fields each presence then tagged value. List: uint32BE count then tagged nonnull elements. Text/decimal/bytes: uint32BE byte length then bytes. Objects do not repeat domain/version. Integers canonical signed decimal ASCII; timestamp signed int64BE UTC microseconds. UUID network16; bool00/01. All lengths must be bounded before allocation. Unknown/extra fields error.",
+  "domains": {
+    "command": "rr.command.v1",
+    "review": "rr.review.v1",
+    "config": "rr.config.v1",
+    "journal": "rr.journal.intent.v1",
+    "checkpoint": "rr.journal.checkpoint.v1",
+    "semantic": "rr.semantic.v1"
+  },
+  "layouts": {
+    "ProviderNamespace": [
+      {
+        "name": "provider",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "sandboxId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "livemode",
+        "type": "boolean",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "AppNamespace": [
+      {
+        "name": "systemId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "environmentId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "PurposeContext": [
+      {
+        "name": "purpose",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      }
+    ],
+    "Observation": [
+      {
+        "name": "readStart",
+        "type": "timestamp",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "readEnd",
+        "type": "timestamp",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "clockErrorUs",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      }
+    ],
+    "PaymentIntent": [
+      {
+        "name": "kind",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "id",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "observation",
+        "type": "object:Observation",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "status",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "captureMethod",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "amount",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "amountReceived",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "amountCapturable",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "currency",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "latestChargeId",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      }
+    ],
+    "Charge": [
+      {
+        "name": "kind",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "id",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "observation",
+        "type": "object:Observation",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "paymentIntentId",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "status",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "paid",
+        "type": "boolean",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "captured",
+        "type": "boolean",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "disputed",
+        "type": "boolean",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "amount",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "amountCaptured",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "amountRefunded",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "currency",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "actualMethodType",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      }
+    ],
+    "Order": [
+      {
+        "name": "kind",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "id",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "observation",
+        "type": "object:Observation",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "paymentReference",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "paymentState",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "rawPaymentState",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "expectedAmount",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "expectedCurrency",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "expectationRevision",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      }
+    ],
+    "FlowDeclarations": [
+      {
+        "name": "oneTime",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      },
+      {
+        "name": "fullOriginal",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      },
+      {
+        "name": "automaticCapture",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      },
+      {
+        "name": "noAdjustments",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      },
+      {
+        "name": "noSubscription",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      },
+      {
+        "name": "noConnect",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      },
+      {
+        "name": "noSplit",
+        "type": "boolean",
+        "required": true,
+        "nullable": true
+      }
+    ],
+    "RunConfig": [
+      {
+        "name": "graceUs",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "freshnessLimitUs",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "flowDeclarations",
+        "type": "object:FlowDeclarations",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Digests": [
+      {
+        "name": "provider",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "application",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Versions": [
+      {
+        "name": "rulesVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "currencyVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "normalizerVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Namespaces": [
+      {
+        "name": "provider",
+        "type": "object:ProviderNamespace",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "application",
+        "type": "object:AppNamespace",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Counts": [
+      {
+        "name": "paymentIntents",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "charges",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "orders",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "CaptureContext": [
+      {
+        "name": "captureId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "providerCapturedAt",
+        "type": "timestamp",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "applicationCapturedAt",
+        "type": "timestamp",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "providerCoverage",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "applicationCoverage",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "providerSourceVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "applicationSourceVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "providerExporterVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "applicationExporterVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Review": [
+      {
+        "name": "inputVersionId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "inputDigests",
+        "type": "object:Digests",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "normalizerVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "namespaces",
+        "type": "object:Namespaces",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "captureContext",
+        "type": "object:CaptureContext",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "rulesVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "currencyVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "config",
+        "type": "object:RunConfig",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "referenceAt",
+        "type": "timestamp",
+        "required": false,
+        "nullable": false
+      }
+    ],
+    "CommandPrefix": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      }
+    ],
+    "Command:CREATE_CASE": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "title",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "purposeContext",
+        "type": "object:PurposeContext",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "providerNamespace",
+        "type": "object:ProviderNamespace",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "appNamespace",
+        "type": "object:AppNamespace",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Command:PATCH_CASE": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "title",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "purposeContext",
+        "type": "object:PurposeContext",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "state",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      }
+    ],
+    "Command:UPLOAD_PAIR": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "providerSha256",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "applicationSha256",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "schemaVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Command:START_RUN": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "inputVersionId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "inputDigests",
+        "type": "object:Digests",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "reviewDigest",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "rulesVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "currencyVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "normalizerVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "config",
+        "type": "object:RunConfig",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "referenceAt",
+        "type": "timestamp",
+        "required": false,
+        "nullable": false
+      }
+    ],
+    "Command:DELETE_CASE": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Command:CLOSURE_REAUTH": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Command:CLOSE_ACCOUNT": [
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "apiVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "action",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseGeneration",
+        "type": "integer",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedRevision",
+        "type": "text",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "closureConfirmationIntentId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "expectedGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "JournalIntent": [
+      {
+        "name": "version",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "journalId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "sequence",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "previousDigest",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "keyId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "operationId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "accountGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "scopeKind",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "workspaceId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "resourceId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "resourceGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "commandKey",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "fingerprintVersion",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "fingerprint",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "deadlineBase",
+        "type": "timestamp",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "preparedAt",
+        "type": "timestamp",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "receiptSha256",
+        "type": "hexbytes",
+        "required": false,
+        "nullable": false
+      }
+    ],
+    "CheckpointManifest": [
+      {
+        "name": "count",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "pageDigests",
+        "type": "list:hexbytes",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Checkpoint": [
+      {
+        "name": "version",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "journalId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "throughSequence",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "previousCheckpointDigest",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "retainedIntentManifest",
+        "type": "object:CheckpointManifest",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "retirementInventoryDigest",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "keyId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Barrier": [
+      {
+        "name": "journalId",
+        "type": "uuid",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "latestSequence",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "checkpointDigest",
+        "type": "hexbytes",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "Work": [
+      {
+        "name": "workVersion",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "kind",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "workspaceId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "caseId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "intakeId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "runId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "operationId",
+        "type": "uuid",
+        "required": false,
+        "nullable": false
+      },
+      {
+        "name": "expectedGeneration",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "SemanticFinding": [
+      {
+        "name": "ruleId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "classification",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "subjectKind",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "subjectId",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "explanationCode",
+        "type": "text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "qualifiers",
+        "type": "list:text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "observedValues",
+        "type": "object:SemanticValues",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "SemanticValues": [
+      {
+        "name": "providerAmount",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "expectedAmount",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "providerCurrency",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "expectedCurrency",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "providerState",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "applicationState",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "elapsedLowerBoundUs",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "graceUs",
+        "type": "integer",
+        "required": false,
+        "nullable": true
+      },
+      {
+        "name": "paymentReference",
+        "type": "text",
+        "required": false,
+        "nullable": true
+      }
+    ],
+    "SemanticCheckCounts": [
+      {
+        "name": "eligible",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "consistent",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "discrepancy",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "moreEvidenceNeeded",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "unsupported",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "ambiguous",
+        "type": "integer",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "SemanticChecks": [
+      {
+        "name": "state",
+        "type": "object:SemanticCheckCounts",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "currency",
+        "type": "object:SemanticCheckCounts",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "amount",
+        "type": "object:SemanticCheckCounts",
+        "required": true,
+        "nullable": false
+      }
+    ],
+    "SemanticResult": [
+      {
+        "name": "inputCounts",
+        "type": "object:Counts",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "checks",
+        "type": "object:SemanticChecks",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "qualifiers",
+        "type": "list:text",
+        "required": true,
+        "nullable": false
+      },
+      {
+        "name": "findings",
+        "type": "list:object:SemanticFinding",
+        "required": true,
+        "nullable": false
+      }
+    ]
+  },
+  "ordering": "Schema-fixed fields; preserve source array order. Semantic findings sort UTF8 tuple(subjectKind,subjectId,ruleId,classification,explanationCode); qualifiers unique sorted UTF8. External IDs no normalization. Byte digests decode lowercase hex before encoding. Absent referenceAt is server-assignment sentinel; preserve absence on retry."
+}

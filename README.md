@@ -53,3 +53,7 @@ docker pull postgres@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162
 ```
 
 Linux: `python3 ops/run_commands.py --suite pg --task RR-03`. The suite creates its own disposable PostgreSQL18.7 container and synthetic databases, validates Flyway migrations and database integrity/security boundaries, then removes only that container. It requires Python3, Java25 and Docker access; the dispatcher also verifies the standard Node/npm prerequisites. No existing database is used. See [database foundation](docs/database.md).
+
+## Evidence codec core
+
+Strict pair validation, manifest-ordered canonical bytes and logical row accounting are implemented as pure modules. Exact scalar helpers are available in the frontend; there is no upload endpoint or financial evaluator yet. See [codec boundaries and verification](docs/evidence-codecs.md).

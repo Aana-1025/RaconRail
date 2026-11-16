@@ -118,6 +118,58 @@
         "{python}",
         "ops/verify_pg.py"
       ]
+    },
+    "domain-codec": {
+      "argv": [
+        "{wrapper}",
+        "--batch-mode",
+        "--settings",
+        ".mvn/settings.xml",
+        "-Dmaven.repo.local={maven_repo}",
+        "-Dtest=CodecTest",
+        "test"
+      ]
+    }
+  },
+  "task_suites": {
+    "RR-04": {
+      "domain": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "domain-codec"
+        ],
+        "scope": "RR-04 strict evidence/canonical/accounting core only; financial evaluator suite remains unavailable"
+      }
+    },
+    "RR-04.1": {
+      "domain": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "domain-codec"
+        ],
+        "scope": "RR-04 strict evidence/canonical/accounting core only; financial evaluator suite remains unavailable"
+      }
+    },
+    "RR-04.2": {
+      "domain": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "domain-codec"
+        ],
+        "scope": "RR-04 strict evidence/canonical/accounting core only; financial evaluator suite remains unavailable"
+      }
     }
   }
 }

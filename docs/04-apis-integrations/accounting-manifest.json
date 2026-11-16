@@ -10,7 +10,8 @@
     "s": "signed int64BE UTC microseconds",
     "b": "one byte00/01",
     "h": "uint32BE length + raw bytes",
-    "j": "uint32BE length + canonical JSON UTF8"
+    "j": "uint32BE length + canonical JSON UTF8",
+    "x": "unsigned int64BE accepted transaction marker (8 value bytes plus standard presence marker)"
   },
   "presence": "Each included nonblob field starts00 absent/01 null/02 value; fixed field order. DB rows have no absent fields; null only where marked. No type tags or field-count framing in accounting codec. Raw-byte fields charged separately, not duplicated as structured lengths.",
   "json": "No floats. Sort object keys lexicographically by UTF8 bytes, no Unicode normalization; arrays preserve order; standard JSON string escapes, ensure_ascii=False, separators comma/colon, no slash escape. JSON integers canonical exact decimal. Root contexts bounded per security/schema.",
@@ -611,6 +612,13 @@
         {
           "name": "created_at",
           "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "accepted_transaction",
+          "type": "x",
           "nullable": false,
           "rawByteCharge": false,
           "excludeFromPreimage": false

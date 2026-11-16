@@ -44,4 +44,15 @@ class DispatcherPolicy(unittest.TestCase):
             def forbidden(*a,**k):self.fail('Incomplete manifest executed a command')
             self.assertEqual(2,rr.execute('build','RR-02.2',root=root,run=forbidden))
 
+class ScopedSuitePolicy(unittest.TestCase):
+    def test_domain_override_is_limited_to_rr04(self):
+        manifest=json.loads((rr.ROOT/'ops/commands.json').read_text())
+        self.assertEqual('BLOCKED',manifest['suites']['domain']['status'])
+        self.assertEqual({'RR-04','RR-04.1','RR-04.2'},set(manifest['task_suites']))
+        self.assertEqual('BLOCKED',manifest['suites']['all']['status'])
+        for task in manifest['task_suites']:
+            suite=manifest['task_suites'][task]['domain']
+            self.assertIn('domain-codec',suite['commands'])
+            self.assertIn('financial evaluator suite remains unavailable',suite['scope'])
+
 if __name__=='__main__':unittest.main()

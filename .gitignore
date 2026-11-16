@@ -47,3 +47,5 @@ __pycache__/
 !/docs/07-frontend/orbit-tokens.json
 
 !/docs/database.md
+
+!/docs/evidence-codecs.md
