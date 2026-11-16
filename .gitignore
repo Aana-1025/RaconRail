@@ -1,0 +1,31 @@
+# Local extraction and rendering intermediates
+/tmp/
+
+# Local credentials and editor state
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+
+# Project-local verified tool archives, executables and verification keyrings
+/.local-tools/
+
+# Reproducible application build outputs and local runtime/test artifacts
+/target/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/coverage/
+/frontend/test-results/
+/frontend/playwright-report/
+
+# Local diagnostics remain private; publish only explicitly reviewed summaries
+/harness/evidence/
+/debug.log
+
+# Python command-runner bytecode
+__pycache__/
+
+# Local-only provenance directives, design studies and reference media
+/docs/references/*.txt
+/docs/07-frontend/previews/
