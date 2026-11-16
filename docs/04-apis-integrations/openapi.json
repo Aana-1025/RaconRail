@@ -1,0 +1,4593 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "ReconRail private investigation API",
+    "version": "1.0.0",
+    "description": "APPROVED D-024 with D-026 workspace-usage read; no running API. Security and semantic constraints in HTTP/evidence docs remain normative. Unknown source facts are not false. OpenAPI describes transport, not guarantees of execution."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/v1/session": {
+      "get": {
+        "operationId": "getSession",
+        "x-family-id": "API-001",
+        "summary": "getSession",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/csrf": {
+      "get": {
+        "operationId": "getCsrf",
+        "x-family-id": "API-002",
+        "summary": "getCsrf",
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Csrf"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "get": {
+        "operationId": "login",
+        "x-family-id": "API-003",
+        "summary": "login",
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "303": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/callback": {
+      "get": {
+        "operationId": "oidcCallback",
+        "x-family-id": "API-003",
+        "summary": "oidcCallback",
+        "security": [],
+        "parameters": [
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": ""
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 4096
+            },
+            "description": ""
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 128
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "logout",
+        "x-family-id": "API-004",
+        "summary": "logout",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases": {
+      "post": {
+        "operationId": "createCase",
+        "x-family-id": "API-005",
+        "summary": "createCase",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Case"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Strong representation revision."
+              }
+            }
+          },
+          "200": {
+            "description": "Already committed same-key/same-intent effect reference; closure never reissues plaintext receipt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCase"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listCases",
+        "x-family-id": "API-006",
+        "summary": "listCases",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 2048
+            },
+            "description": ""
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "ARCHIVED"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CasePage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}": {
+      "get": {
+        "operationId": "getCase",
+        "x-family-id": "API-006",
+        "summary": "getCase",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Case"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Strong representation revision."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "patchCase",
+        "x-family-id": "API-007",
+        "summary": "patchCase",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\"[A-Za-z0-9_-]+\"$"
+            },
+            "description": "Exact single strong current Case ETag; wildcard rejected."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated Case or already committed command reference.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Case"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommandResult"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Strong representation revision."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCase"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/intakes": {
+      "post": {
+        "operationId": "uploadPair",
+        "x-family-id": "API-008",
+        "summary": "uploadPair",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          },
+          {
+            "name": "X-RR-Provider-SHA256",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Digest"
+            },
+            "description": ""
+          },
+          {
+            "name": "X-RR-Application-SHA256",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Digest"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Intake"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "200": {
+            "description": "Already committed same-key/same-intent effect reference; closure never reissues plaintext receipt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "provider": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "application": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "provider",
+                  "application"
+                ],
+                "additionalProperties": false
+              },
+              "encoding": {
+                "provider": {
+                  "contentType": "application/json"
+                },
+                "application": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/intakes/{T}": {
+      "get": {
+        "operationId": "getIntake",
+        "x-family-id": "API-009",
+        "summary": "getIntake",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "T",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Intake"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/inputs": {
+      "get": {
+        "operationId": "listInputs",
+        "x-family-id": "API-010",
+        "summary": "listInputs",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 2048
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputVersionPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/inputs/{I}": {
+      "get": {
+        "operationId": "getInput",
+        "x-family-id": "API-010",
+        "summary": "getInput",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "I",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputVersion"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/inputs/{I}/records": {
+      "get": {
+        "operationId": "listInputRecords",
+        "x-family-id": "API-011",
+        "summary": "listInputRecords",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "I",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 2048
+            },
+            "description": ""
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PI",
+                "CHARGE",
+                "ORDER"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/runs": {
+      "post": {
+        "operationId": "startRun",
+        "x-family-id": "API-012",
+        "summary": "startRun",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "200": {
+            "description": "Already committed same-key/same-intent effect reference; closure never reissues plaintext receipt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartRun"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listRuns",
+        "x-family-id": "API-013",
+        "summary": "listRuns",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 2048
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/runs/{R}": {
+      "get": {
+        "operationId": "getRun",
+        "x-family-id": "API-013",
+        "summary": "getRun",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "R",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/runs/{R}/findings": {
+      "get": {
+        "operationId": "listFindings",
+        "x-family-id": "API-014",
+        "summary": "listFindings",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "R",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 50
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 2048
+            },
+            "description": ""
+          },
+          {
+            "name": "classification",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CONSISTENT",
+                "DISCREPANCY",
+                "MORE_EVIDENCE_NEEDED",
+                "UNSUPPORTED",
+                "AMBIGUOUS"
+              ]
+            },
+            "description": ""
+          },
+          {
+            "name": "ruleId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DOM-F-001",
+                "DOM-F-002",
+                "DOM-F-003"
+              ]
+            },
+            "description": ""
+          },
+          {
+            "name": "subjectKind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PAYMENT_INTENT",
+                "CHARGE",
+                "ORDER"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindingListItemPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/runs/{R}/findings/{F}": {
+      "get": {
+        "operationId": "getFinding",
+        "x-family-id": "API-014",
+        "summary": "getFinding",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "R",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "F",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Finding"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{C}/deletions": {
+      "post": {
+        "operationId": "deleteCase",
+        "x-family-id": "API-015",
+        "summary": "deleteCase",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "C",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\"[A-Za-z0-9_-]+\"$"
+            },
+            "description": "Exact single strong current Case ETag; wildcard rejected."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "200": {
+            "description": "Already committed same-key/same-intent effect reference; closure never reissues plaintext receipt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteCase"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/operations/{O}": {
+      "get": {
+        "operationId": "getOperation",
+        "x-family-id": "API-016",
+        "summary": "getOperation",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "O",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/closure-reauthentication": {
+      "post": {
+        "operationId": "closureReauthentication",
+        "x-family-id": "API-017",
+        "summary": "closureReauthentication",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          }
+        ],
+        "responses": {
+          "303": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Confirm"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/closures": {
+      "post": {
+        "operationId": "closeAccount",
+        "x-family-id": "API-018",
+        "summary": "closeAccount",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 512
+            },
+            "description": "Session-bound token; fresh after authentication/logout."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          },
+          {
+            "name": "Command-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": "Account-generation/action-scoped command identity; preserve on uncertain outcome."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClosureAccepted"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                },
+                "description": "Owned API resource, or fixed trusted OIDC redirect for auth navigation."
+              }
+            }
+          },
+          "200": {
+            "description": "Already committed same-key/same-intent effect reference; closure never reissues plaintext receipt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloseAccount"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/closure-status": {
+      "post": {
+        "operationId": "getClosureStatus",
+        "x-family-id": "API-019",
+        "summary": "getClosureStatus",
+        "security": [],
+        "parameters": [
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Required unless verified trusted Referer fallback passes D-023; cross-field origin checks are semantic, not expressible by this individual parameter schema."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LookupReceipt"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/commands/{action}/{key}": {
+      "get": {
+        "operationId": "getCommand",
+        "x-family-id": "API-020",
+        "summary": "getCommand",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CREATE_CASE",
+                "PATCH_CASE",
+                "UPLOAD_PAIR",
+                "START_RUN",
+                "DELETE_CASE",
+                "CLOSURE_REAUTH",
+                "CLOSE_ACCOUNT"
+              ]
+            },
+            "description": ""
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,128}$"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspace/usage": {
+      "get": {
+        "operationId": "getWorkspaceUsage",
+        "x-family-id": "API-021",
+        "summary": "getWorkspaceUsage",
+        "security": [
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Committed/observable response as documented; no business correctness or cleanup-complete guarantee.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceUsage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              }
+            }
+          },
+          "default": {
+            "description": "Safe Problem Details with actual matching4xx/5xx HTTP status. Domain unsupported findings are not transport errors.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "All private/status/auth responses."
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 3600
+                },
+                "description": "Bounded retry guidance on429/503; preserve command identity."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "SessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "__Host-rr_session",
+        "description": "Hosted HttpOnly Secure opaque session. Local dev uses separate cookie config."
+      }
+    },
+    "schemas": {
+      "Uuid": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$"
+      },
+      "Instant": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^(?!0000)[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-5][0-9](\\.[0-9]{1,6})?Z$"
+      },
+      "Money": {
+        "type": "string",
+        "pattern": "^(0|-?[1-9][0-9]{0,37})$"
+      },
+      "Unsigned": {
+        "type": "string",
+        "pattern": "^(0|[1-9][0-9]{0,18})$",
+        "x-maxInteger": "9223372036854775807"
+      },
+      "Positive": {
+        "type": "string",
+        "pattern": "^[1-9][0-9]{0,18}$",
+        "x-maxInteger": "9223372036854775807"
+      },
+      "Duration": {
+        "type": "string",
+        "pattern": "^(0|[1-9][0-9]{0,17})$",
+        "x-maxInteger": "315576000000000000"
+      },
+      "Digest": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "Secret": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-]{43}$",
+        "description": "Base64url without padding, exactly32 decoded bytes; decode/re-encode must match."
+      },
+      "ProviderNamespace": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "const": "stripe"
+          },
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "sandboxId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "livemode": {
+            "const": false
+          }
+        },
+        "required": [
+          "provider",
+          "accountId",
+          "sandboxId",
+          "livemode"
+        ],
+        "additionalProperties": false
+      },
+      "AppNamespace": {
+        "type": "object",
+        "properties": {
+          "systemId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "environmentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          }
+        },
+        "required": [
+          "systemId",
+          "environmentId"
+        ],
+        "additionalProperties": false
+      },
+      "PurposeContext": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1024,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 1024
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "Observation": {
+        "type": "object",
+        "properties": {
+          "readStart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Instant"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "readEnd": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Instant"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "clockErrorUs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Duration"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "PaymentIntent": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "payment_intent"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "observation": {
+            "$ref": "#/components/schemas/Observation"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "captureMethod": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amountReceived": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amountCapturable": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latestChargeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 255
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "observation"
+        ],
+        "additionalProperties": false
+      },
+      "Charge": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "charge"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "observation": {
+            "$ref": "#/components/schemas/Observation"
+          },
+          "paymentIntentId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 255
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "paid": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "captured": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "disputed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amountCaptured": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amountRefunded": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actualMethodType": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "observation"
+        ],
+        "additionalProperties": false
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "order"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "observation": {
+            "$ref": "#/components/schemas/Observation"
+          },
+          "paymentReference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 255
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "paymentState": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rawPaymentState": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expectedAmount": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expectedCurrency": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expectationRevision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 255
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "observation"
+        ],
+        "additionalProperties": false
+      },
+      "ProviderArtifact": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "const": "rr-evidence-v1"
+          },
+          "role": {
+            "const": "provider"
+          },
+          "captureId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "providerNamespace": {
+            "$ref": "#/components/schemas/ProviderNamespace"
+          },
+          "appNamespace": {
+            "$ref": "#/components/schemas/AppNamespace"
+          },
+          "sourceVersion": {
+            "const": "2025-09-30.clover"
+          },
+          "exporterVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "capturedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "coverage": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "complete",
+              "unknown"
+            ]
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PaymentIntent"
+                },
+                {
+                  "$ref": "#/components/schemas/Charge"
+                }
+              ]
+            },
+            "maxItems": 10000
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "role",
+          "captureId",
+          "providerNamespace",
+          "appNamespace",
+          "sourceVersion",
+          "exporterVersion",
+          "capturedAt",
+          "coverage",
+          "records"
+        ],
+        "additionalProperties": false
+      },
+      "ApplicationArtifact": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "const": "rr-evidence-v1"
+          },
+          "role": {
+            "const": "application"
+          },
+          "captureId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "providerNamespace": {
+            "$ref": "#/components/schemas/ProviderNamespace"
+          },
+          "appNamespace": {
+            "$ref": "#/components/schemas/AppNamespace"
+          },
+          "sourceVersion": {
+            "const": "rr-app-export-v1"
+          },
+          "exporterVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "capturedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "coverage": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "complete",
+              "unknown"
+            ]
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "maxItems": 10000
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "role",
+          "captureId",
+          "providerNamespace",
+          "appNamespace",
+          "sourceVersion",
+          "exporterVersion",
+          "capturedAt",
+          "coverage",
+          "records"
+        ],
+        "additionalProperties": false
+      },
+      "FlowDeclarations": {
+        "type": "object",
+        "properties": {
+          "oneTime": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "fullOriginal": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "automaticCapture": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "noAdjustments": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "noSubscription": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "noConnect": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "noSplit": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "oneTime",
+          "fullOriginal",
+          "automaticCapture",
+          "noAdjustments",
+          "noSubscription",
+          "noConnect",
+          "noSplit"
+        ],
+        "additionalProperties": false
+      },
+      "RunConfig": {
+        "type": "object",
+        "properties": {
+          "graceUs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Duration"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "freshnessLimitUs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Duration"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "flowDeclarations": {
+            "$ref": "#/components/schemas/FlowDeclarations"
+          }
+        },
+        "required": [
+          "flowDeclarations"
+        ],
+        "additionalProperties": false
+      },
+      "Digests": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/Digest"
+          },
+          "application": {
+            "$ref": "#/components/schemas/Digest"
+          }
+        },
+        "required": [
+          "provider",
+          "application"
+        ],
+        "additionalProperties": false
+      },
+      "Versions": {
+        "type": "object",
+        "properties": {
+          "rulesVersion": {
+            "const": "stripe-card-order-v1"
+          },
+          "currencyVersion": {
+            "const": "rr-currency-v1"
+          },
+          "normalizerVersion": {
+            "const": "stripe-card-order-normalizer-v1"
+          }
+        },
+        "required": [
+          "rulesVersion",
+          "currencyVersion",
+          "normalizerVersion"
+        ],
+        "additionalProperties": false
+      },
+      "Namespaces": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/ProviderNamespace"
+          },
+          "application": {
+            "$ref": "#/components/schemas/AppNamespace"
+          }
+        },
+        "required": [
+          "provider",
+          "application"
+        ],
+        "additionalProperties": false
+      },
+      "Counts": {
+        "type": "object",
+        "properties": {
+          "paymentIntents": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "charges": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "orders": {
+            "$ref": "#/components/schemas/Unsigned"
+          }
+        },
+        "required": [
+          "paymentIntents",
+          "charges",
+          "orders"
+        ],
+        "additionalProperties": false
+      },
+      "CreateCase": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1024,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 1024
+          },
+          "purposeContext": {
+            "$ref": "#/components/schemas/PurposeContext"
+          },
+          "providerNamespace": {
+            "$ref": "#/components/schemas/ProviderNamespace"
+          },
+          "appNamespace": {
+            "$ref": "#/components/schemas/AppNamespace"
+          }
+        },
+        "required": [
+          "purposeContext",
+          "providerNamespace",
+          "appNamespace"
+        ],
+        "additionalProperties": false
+      },
+      "PatchCase": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 1024,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 1024
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "purposeContext": {
+            "$ref": "#/components/schemas/PurposeContext"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "StartRun": {
+        "type": "object",
+        "properties": {
+          "inputVersionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "inputDigests": {
+            "$ref": "#/components/schemas/Digests"
+          },
+          "reviewDigest": {
+            "$ref": "#/components/schemas/Digest"
+          },
+          "rulesVersion": {
+            "const": "stripe-card-order-v1"
+          },
+          "currencyVersion": {
+            "const": "rr-currency-v1"
+          },
+          "normalizerVersion": {
+            "const": "stripe-card-order-normalizer-v1"
+          },
+          "config": {
+            "$ref": "#/components/schemas/RunConfig"
+          },
+          "referenceAt": {
+            "$ref": "#/components/schemas/Instant"
+          }
+        },
+        "required": [
+          "inputVersionId",
+          "inputDigests",
+          "reviewDigest",
+          "rulesVersion",
+          "currencyVersion",
+          "normalizerVersion",
+          "config"
+        ],
+        "additionalProperties": false
+      },
+      "Confirm": {
+        "type": "object",
+        "properties": {
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "confirm"
+        ],
+        "additionalProperties": false
+      },
+      "DeleteCase": {
+        "type": "object",
+        "properties": {
+          "expectedGeneration": {
+            "$ref": "#/components/schemas/Positive"
+          },
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "expectedGeneration",
+          "confirm"
+        ],
+        "additionalProperties": false
+      },
+      "CloseAccount": {
+        "type": "object",
+        "properties": {
+          "closureConfirmation": {
+            "$ref": "#/components/schemas/Secret"
+          },
+          "expectedGeneration": {
+            "$ref": "#/components/schemas/Positive"
+          },
+          "confirm": {
+            "const": true
+          }
+        },
+        "required": [
+          "closureConfirmation",
+          "expectedGeneration",
+          "confirm"
+        ],
+        "additionalProperties": false
+      },
+      "LookupReceipt": {
+        "type": "object",
+        "properties": {
+          "receipt": {
+            "$ref": "#/components/schemas/Secret"
+          }
+        },
+        "required": [
+          "receipt"
+        ],
+        "additionalProperties": false
+      },
+      "ErrorEntry": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 256
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          }
+        },
+        "required": [
+          "path",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^urn:reconrail:problem:[a-z_]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 512
+          },
+          "instance": {
+            "type": "string",
+            "pattern": "^urn:uuid:"
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "requestId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "retryAfterSeconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3600
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorEntry"
+            },
+            "maxItems": 20
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "instance",
+          "code",
+          "requestId"
+        ],
+        "additionalProperties": true
+      },
+      "WorkspaceUsage": {
+        "type": "object",
+        "properties": {
+          "quotaBytes": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "usedBytes": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "reservedBytes": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "availableBytes": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "accountingVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "observedAt": {
+            "$ref": "#/components/schemas/Instant"
+          }
+        },
+        "required": [
+          "quotaBytes",
+          "usedBytes",
+          "reservedBytes",
+          "availableBytes",
+          "accountingVersion",
+          "observedAt"
+        ],
+        "additionalProperties": true
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "workspaceId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "sessionGeneration": {
+            "$ref": "#/components/schemas/Positive"
+          },
+          "expiresAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CREATE_CASE",
+                "IMPORT",
+                "ANALYZE",
+                "DELETE_CASE",
+                "CLOSE_ACCOUNT"
+              ]
+            },
+            "maxItems": 5
+          },
+          "closureConfirmation": {
+            "$ref": "#/components/schemas/Secret"
+          }
+        },
+        "required": [
+          "accountId",
+          "workspaceId",
+          "sessionGeneration",
+          "expiresAt",
+          "capabilities"
+        ],
+        "additionalProperties": true
+      },
+      "Csrf": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 512
+          },
+          "headerName": {
+            "const": "X-CSRF-TOKEN"
+          }
+        },
+        "required": [
+          "token",
+          "headerName"
+        ],
+        "additionalProperties": true
+      },
+      "Case": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 1024,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 1024
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "purposeContext": {
+            "$ref": "#/components/schemas/PurposeContext"
+          },
+          "namespaces": {
+            "$ref": "#/components/schemas/Namespaces"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ]
+          },
+          "generation": {
+            "$ref": "#/components/schemas/Positive"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Instant"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "purposeContext",
+          "namespaces",
+          "state",
+          "generation",
+          "createdAt",
+          "updatedAt"
+        ],
+        "additionalProperties": true
+      },
+      "Intake": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "RECEIVING",
+              "VALIDATION_PENDING",
+              "VALIDATING",
+              "VALIDATED",
+              "ACCEPTED",
+              "REJECTED",
+              "LOST",
+              "EXPIRED"
+            ]
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorEntry"
+            },
+            "maxItems": 20
+          },
+          "counts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "inputVersionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "validationSystemMs": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "expiresAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "errors",
+          "expiresAt"
+        ],
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "ACCEPTED"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "inputVersionId",
+                "counts",
+                "validationSystemMs"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "inputVersionId"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "CaptureContext": {
+        "type": "object",
+        "properties": {
+          "captureId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "providerCapturedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "applicationCapturedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "providerCoverage": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "complete",
+              "unknown"
+            ]
+          },
+          "applicationCoverage": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "complete",
+              "unknown"
+            ]
+          },
+          "providerSourceVersion": {
+            "const": "2025-09-30.clover"
+          },
+          "applicationSourceVersion": {
+            "const": "rr-app-export-v1"
+          },
+          "providerExporterVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "applicationExporterVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          }
+        },
+        "required": [
+          "captureId",
+          "providerCapturedAt",
+          "applicationCapturedAt",
+          "providerCoverage",
+          "applicationCoverage",
+          "providerSourceVersion",
+          "applicationSourceVersion",
+          "providerExporterVersion",
+          "applicationExporterVersion"
+        ],
+        "additionalProperties": false
+      },
+      "InputVersion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "ordinal": {
+            "$ref": "#/components/schemas/Positive"
+          },
+          "digests": {
+            "$ref": "#/components/schemas/Digests"
+          },
+          "versions": {
+            "type": "object",
+            "properties": {
+              "normalizerVersion": {
+                "const": "stripe-card-order-normalizer-v1"
+              }
+            },
+            "required": [
+              "normalizerVersion"
+            ],
+            "additionalProperties": false
+          },
+          "namespaces": {
+            "$ref": "#/components/schemas/Namespaces"
+          },
+          "captureContext": {
+            "$ref": "#/components/schemas/CaptureContext"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "validationSystemMs": {
+            "$ref": "#/components/schemas/Unsigned"
+          }
+        },
+        "required": [
+          "id",
+          "ordinal",
+          "digests",
+          "versions",
+          "namespaces",
+          "captureContext",
+          "counts",
+          "validationSystemMs"
+        ],
+        "additionalProperties": true
+      },
+      "CheckCounts": {
+        "type": "object",
+        "properties": {
+          "eligible": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "consistent": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "discrepancy": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "moreEvidenceNeeded": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "unsupported": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "ambiguous": {
+            "$ref": "#/components/schemas/Unsigned"
+          }
+        },
+        "required": [
+          "eligible",
+          "consistent",
+          "discrepancy",
+          "moreEvidenceNeeded",
+          "unsupported",
+          "ambiguous"
+        ],
+        "additionalProperties": false
+      },
+      "Summary": {
+        "type": "object",
+        "properties": {
+          "inputCounts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "checks": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "$ref": "#/components/schemas/CheckCounts"
+              },
+              "currency": {
+                "$ref": "#/components/schemas/CheckCounts"
+              },
+              "amount": {
+                "$ref": "#/components/schemas/CheckCounts"
+              }
+            },
+            "required": [
+              "state",
+              "currency",
+              "amount"
+            ],
+            "additionalProperties": false
+          },
+          "findingCount": {
+            "$ref": "#/components/schemas/Unsigned"
+          },
+          "qualifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 128
+            },
+            "maxItems": 32
+          }
+        },
+        "required": [
+          "inputCounts",
+          "checks",
+          "findingCount",
+          "qualifiers"
+        ],
+        "additionalProperties": true
+      },
+      "Run": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "inputVersionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/Versions"
+          },
+          "configDigest": {
+            "$ref": "#/components/schemas/Digest"
+          },
+          "referenceAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "RETRY_WAIT",
+              "PUBLISHED",
+              "FAILED",
+              "EXPIRED",
+              "SUPPRESSED"
+            ]
+          },
+          "attemptCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "requestedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "deadlineAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          }
+        },
+        "required": [
+          "id",
+          "inputVersionId",
+          "versions",
+          "configDigest",
+          "referenceAt",
+          "state",
+          "attemptCount",
+          "requestedAt",
+          "deadlineAt"
+        ],
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "PUBLISHED"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "summary"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "summary"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "SourceRef": {
+        "type": "object",
+        "properties": {
+          "artifactRole": {
+            "type": "string",
+            "enum": [
+              "provider",
+              "application"
+            ]
+          },
+          "recordIndex": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9999
+          },
+          "fieldPointer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 256
+          }
+        },
+        "required": [
+          "artifactRole",
+          "recordIndex",
+          "fieldPointer"
+        ],
+        "additionalProperties": true
+      },
+      "ObservedValues": {
+        "type": "object",
+        "properties": {
+          "providerAmount": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expectedAmount": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "providerCurrency": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expectedCurrency": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "providerState": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "applicationState": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "elapsedLowerBoundUs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "graceUs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Duration"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "paymentReference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "^[^\\u0000]*$",
+                "x-maxUtf8Bytes": 255
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": true
+      },
+      "Finding": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "ruleId": {
+            "type": "string",
+            "enum": [
+              "DOM-F-001",
+              "DOM-F-002",
+              "DOM-F-003"
+            ]
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "CONSISTENT",
+              "DISCREPANCY",
+              "MORE_EVIDENCE_NEEDED",
+              "UNSUPPORTED",
+              "AMBIGUOUS"
+            ]
+          },
+          "subjectKind": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_INTENT",
+              "CHARGE",
+              "ORDER"
+            ]
+          },
+          "subjectId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "maxItems": 16
+          },
+          "explanationCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "qualifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 128
+            },
+            "maxItems": 32
+          },
+          "observedValues": {
+            "$ref": "#/components/schemas/ObservedValues"
+          }
+        },
+        "required": [
+          "id",
+          "ruleId",
+          "classification",
+          "subjectKind",
+          "subjectId",
+          "sourceRefs",
+          "explanationCode",
+          "qualifiers",
+          "observedValues"
+        ],
+        "additionalProperties": true
+      },
+      "FindingListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "ruleId": {
+            "type": "string",
+            "enum": [
+              "DOM-F-001",
+              "DOM-F-002",
+              "DOM-F-003"
+            ]
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "CONSISTENT",
+              "DISCREPANCY",
+              "MORE_EVIDENCE_NEEDED",
+              "UNSUPPORTED",
+              "AMBIGUOUS"
+            ]
+          },
+          "subjectKind": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_INTENT",
+              "CHARGE",
+              "ORDER"
+            ]
+          },
+          "subjectId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 255
+          },
+          "explanationCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "qualifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 128
+            },
+            "maxItems": 32
+          }
+        },
+        "required": [
+          "id",
+          "ruleId",
+          "classification",
+          "subjectKind",
+          "subjectId",
+          "explanationCode",
+          "qualifiers"
+        ],
+        "additionalProperties": true
+      },
+      "Record": {
+        "type": "object",
+        "properties": {
+          "record": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentIntent"
+              },
+              {
+                "$ref": "#/components/schemas/Charge"
+              },
+              {
+                "$ref": "#/components/schemas/Order"
+              }
+            ]
+          },
+          "source": {
+            "$ref": "#/components/schemas/SourceRef"
+          }
+        },
+        "required": [
+          "record",
+          "source"
+        ],
+        "additionalProperties": true
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "PREPARING",
+              "JOURNALED",
+              "FENCED",
+              "CLEANING",
+              "ACTIVE_DATA_REMOVED",
+              "RETIREMENT_PENDING",
+              "RETIRED"
+            ]
+          },
+          "deniedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "activeRemovedAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "retiredAt": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "deadlineBase": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "retentionBreach": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "phase",
+          "deadlineBase",
+          "retentionBreach"
+        ],
+        "additionalProperties": true
+      },
+      "ClosureAccepted": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "$ref": "#/components/schemas/Operation"
+          },
+          "statusReceipt": {
+            "$ref": "#/components/schemas/Secret"
+          }
+        },
+        "required": [
+          "operation"
+        ],
+        "additionalProperties": true
+      },
+      "CommandResult": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "COMMITTED",
+              "PENDING"
+            ]
+          },
+          "effectKind": {
+            "type": "string",
+            "enum": [
+              "CASE",
+              "INTAKE",
+              "RUN",
+              "OPERATION",
+              "REAUTHENTICATION"
+            ]
+          },
+          "effectId": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        },
+        "required": [
+          "state",
+          "effectKind"
+        ],
+        "additionalProperties": true
+      },
+      "CasePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Case"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "IntakePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Intake"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "InputVersionPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InputVersion"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "RecordPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Record"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "RunPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Run"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "FindingListItemPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindingListItem"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      }
+    }
+  }
+}

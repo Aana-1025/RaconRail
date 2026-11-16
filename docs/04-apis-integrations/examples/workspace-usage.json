@@ -1,0 +1,8 @@
+{
+  "quotaBytes": "524288000",
+  "usedBytes": "104857600",
+  "reservedBytes": "67108864",
+  "availableBytes": "352321536",
+  "accountingVersion": "AccountingCodecV1",
+  "observedAt": "2026-01-01T10:12:00Z"
+}

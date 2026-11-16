@@ -1,0 +1,2238 @@
+{
+  "status": "APPROVED D-024 realization; no SQL applied",
+  "codec": "AccountingCodecV1",
+  "rowAllowanceBytes": 128,
+  "types": {
+    "u": "16byte network UUID",
+    "i": "signed int64BE",
+    "m": "uint32BE length + canonical decimal ASCII",
+    "t": "uint32BE length + UTF8",
+    "s": "signed int64BE UTC microseconds",
+    "b": "one byte00/01",
+    "h": "uint32BE length + raw bytes",
+    "j": "uint32BE length + canonical JSON UTF8"
+  },
+  "presence": "Each included nonblob field starts00 absent/01 null/02 value; fixed field order. DB rows have no absent fields; null only where marked. No type tags or field-count framing in accounting codec. Raw-byte fields charged separately, not duplicated as structured lengths.",
+  "json": "No floats. Sort object keys lexicographically by UTF8 bytes, no Unicode normalization; arrays preserve order; standard JSON string escapes, ensure_ascii=False, separators comma/colon, no slash escape. JSON integers canonical exact decimal. Root contexts bounded per security/schema.",
+  "tables": [
+    {
+      "tableId": "DB-T-001",
+      "table": "rr.account",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "account_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "state",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "closed_at",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-002",
+      "table": "rr.identity_binding",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "issuer",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "subject",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-003",
+      "table": "rr.workspace",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "used_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "reserved_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "nonterminal_runs",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-004",
+      "table": "rr.case_record",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "state",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "title",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "purpose_context",
+          "type": "j",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "provider_namespace",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "app_namespace",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "removed_at",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-005",
+      "table": "rr.service_admission",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "singleton",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "queued_runs",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "nonterminal_runs",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "staged_pairs",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "staged_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-006",
+      "table": "rr.runtime_incarnation",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "runtime_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "state",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "predecessor_id",
+          "type": "u",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "exit_evidence_digest",
+          "type": "h",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "recovery_barrier",
+          "type": "i",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-007",
+      "table": "rr.intake",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "intake_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "state",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "first_received_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "expires_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "temporary_handle",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "received_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "slot_held",
+          "type": "b",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "last_error_code",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-008",
+      "table": "rr.input_version",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_version_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "ordinal",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "intake_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "normalizer_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "provider_account",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "provider_sandbox",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "app_system",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "app_environment",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "context",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "context_digest",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "validation_system_ms",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "provider_role",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "application_role",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-009",
+      "table": "rr.artifact",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_version_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "role",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "raw_bytes",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": true,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "sha256",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "logical_records",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-010",
+      "table": "rr.provider_payment",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_version_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "payment_id",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "source_ordinal",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "status",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "capture_method",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "amount",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "amount_received",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "amount_capturable",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "currency",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "latest_charge_id",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "observed_start",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "observed_end",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "clock_error_us",
+          "type": "i",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "presence",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-011",
+      "table": "rr.provider_charge",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_version_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "charge_id",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "source_ordinal",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "payment_intent_id",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "status",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "paid",
+          "type": "b",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "captured",
+          "type": "b",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "disputed",
+          "type": "b",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "amount",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "amount_captured",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "amount_refunded",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "currency",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "actual_method_type",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "observed_start",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "observed_end",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "clock_error_us",
+          "type": "i",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "presence",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-012",
+      "table": "rr.application_order",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_version_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "order_id",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "source_ordinal",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "payment_reference",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "payment_state",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "raw_payment_state",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "expected_amount",
+          "type": "m",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "expected_currency",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "expectation_revision",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "observed_start",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "observed_end",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "clock_error_us",
+          "type": "i",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "presence",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-013",
+      "table": "rr.command_effect",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "account_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "action",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "client_key",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "fingerprint_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "fingerprint",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "effect_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "effect_kind",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "outcome_code",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-014",
+      "table": "rr.analysis_run",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "run_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "rule_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "currency_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "normalizer_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "config",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "config_digest",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "reference_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "requested_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "deadline_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "operational_phase",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "terminal_at",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "result_reservation_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "validation_system_ms",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-015",
+      "table": "rr.run_attempt",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "run_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "attempt_no",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "attempt_token",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "runtime_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "state",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "started_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "stopped_at",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "output_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "failure_code",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-016",
+      "table": "rr.output_manifest",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "run_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "attempt_no",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "sealed",
+          "type": "b",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "input_count",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "assessed_count",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "unassessed_count",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "finding_count",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "encoded_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "digest",
+          "type": "h",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-017",
+      "table": "rr.finding",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "run_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "attempt_no",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "finding_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "rule_id",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "classification",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "subject_kind",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "subject_id",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "source_refs",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "explanation_code",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "safe_values",
+          "type": "j",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "encoded_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-018",
+      "table": "rr.publication",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "run_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "attempt_no",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "required_sealed",
+          "type": "b",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "published_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "semantic_digest",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-019",
+      "table": "rr.case_execution_slot",
+      "budget": "workspace",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "owner_run_id",
+          "type": "u",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "owner_attempt_no",
+          "type": "i",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "runtime_id",
+          "type": "u",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "token",
+          "type": "u",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "held_since",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-020",
+      "table": "rr.quota_allocation",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "allocation_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "resource_kind",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "resource_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "codec_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "state",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "reserved_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "charged_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-021",
+      "table": "rr.deletion_operation",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "operation_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "workspace_id",
+          "type": "u",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "case_id",
+          "type": "u",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "scope_kind",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "resource_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "resource_generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "command_key",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "fingerprint_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "fingerprint",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "receipt_sha256",
+          "type": "h",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "phase",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "journal_sequence",
+          "type": "i",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "deadline_base",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "fenced_commit_known",
+          "type": "b",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "active_removed_at",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "retired_at",
+          "type": "s",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "safe_error_code",
+          "type": "t",
+          "nullable": true,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-022",
+      "table": "rr.suppression",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "scope_kind",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "account_generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "resource_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "resource_generation",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "operation_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "deny_from",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "retain_until",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "payload_retirement_verified",
+          "type": "b",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "retention_breach",
+          "type": "b",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-023",
+      "table": "rr.recovery_cursor",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "singleton",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "journal_identity",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "applied_sequence",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "checkpoint_digest",
+          "type": "h",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "service_clock_high_water",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "runtime_id",
+          "type": "u",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    },
+    {
+      "tableId": "DB-T-024",
+      "table": "rr.host_budget",
+      "budget": "service-bounded",
+      "fields": [
+        {
+          "name": "storage_kind",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "capacity_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "reservation_limit_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "free_space_floor_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "reserved_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        },
+        {
+          "name": "observed_free_bytes",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "probe_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "policy_version",
+          "type": "t",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "created_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "updated_at",
+          "type": "s",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": false
+        },
+        {
+          "name": "row_version",
+          "type": "i",
+          "nullable": false,
+          "rawByteCharge": false,
+          "excludeFromPreimage": true
+        }
+      ]
+    }
+  ]
+}

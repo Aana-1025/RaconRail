@@ -1,0 +1,161 @@
+{
+  "status": "APPROVED planning",
+  "operations": [
+    {
+      "family": "API-001",
+      "method": "GET",
+      "path": "/api/v1/session",
+      "operationId": "getSession"
+    },
+    {
+      "family": "API-002",
+      "method": "GET",
+      "path": "/api/v1/csrf",
+      "operationId": "getCsrf"
+    },
+    {
+      "family": "API-003",
+      "method": "GET",
+      "path": "/auth/login",
+      "operationId": "login"
+    },
+    {
+      "family": "API-003",
+      "method": "GET",
+      "path": "/auth/callback",
+      "operationId": "oidcCallback"
+    },
+    {
+      "family": "API-004",
+      "method": "POST",
+      "path": "/auth/logout",
+      "operationId": "logout"
+    },
+    {
+      "family": "API-005",
+      "method": "POST",
+      "path": "/api/v1/cases",
+      "operationId": "createCase"
+    },
+    {
+      "family": "API-006",
+      "method": "GET",
+      "path": "/api/v1/cases",
+      "operationId": "listCases"
+    },
+    {
+      "family": "API-006",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}",
+      "operationId": "getCase"
+    },
+    {
+      "family": "API-007",
+      "method": "PATCH",
+      "path": "/api/v1/cases/{C}",
+      "operationId": "patchCase"
+    },
+    {
+      "family": "API-008",
+      "method": "POST",
+      "path": "/api/v1/cases/{C}/intakes",
+      "operationId": "uploadPair"
+    },
+    {
+      "family": "API-009",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/intakes/{T}",
+      "operationId": "getIntake"
+    },
+    {
+      "family": "API-010",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/inputs",
+      "operationId": "listInputs"
+    },
+    {
+      "family": "API-010",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/inputs/{I}",
+      "operationId": "getInput"
+    },
+    {
+      "family": "API-011",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/inputs/{I}/records",
+      "operationId": "listInputRecords"
+    },
+    {
+      "family": "API-012",
+      "method": "POST",
+      "path": "/api/v1/cases/{C}/runs",
+      "operationId": "startRun"
+    },
+    {
+      "family": "API-013",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/runs",
+      "operationId": "listRuns"
+    },
+    {
+      "family": "API-013",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/runs/{R}",
+      "operationId": "getRun"
+    },
+    {
+      "family": "API-014",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/runs/{R}/findings",
+      "operationId": "listFindings"
+    },
+    {
+      "family": "API-014",
+      "method": "GET",
+      "path": "/api/v1/cases/{C}/runs/{R}/findings/{F}",
+      "operationId": "getFinding"
+    },
+    {
+      "family": "API-015",
+      "method": "POST",
+      "path": "/api/v1/cases/{C}/deletions",
+      "operationId": "deleteCase"
+    },
+    {
+      "family": "API-016",
+      "method": "GET",
+      "path": "/api/v1/operations/{O}",
+      "operationId": "getOperation"
+    },
+    {
+      "family": "API-017",
+      "method": "POST",
+      "path": "/api/v1/account/closure-reauthentication",
+      "operationId": "closureReauthentication"
+    },
+    {
+      "family": "API-018",
+      "method": "POST",
+      "path": "/api/v1/account/closures",
+      "operationId": "closeAccount"
+    },
+    {
+      "family": "API-019",
+      "method": "POST",
+      "path": "/api/v1/closure-status",
+      "operationId": "getClosureStatus"
+    },
+    {
+      "family": "API-020",
+      "method": "GET",
+      "path": "/api/v1/commands/{action}/{key}",
+      "operationId": "getCommand"
+    },
+    {
+      "family": "API-021",
+      "method": "GET",
+      "path": "/api/v1/workspace/usage",
+      "operationId": "getWorkspaceUsage"
+    }
+  ]
+}

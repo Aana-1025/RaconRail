@@ -1,0 +1,12 @@
+{
+  "graceUs": "60000000",
+  "flowDeclarations": {
+    "oneTime": true,
+    "fullOriginal": true,
+    "automaticCapture": true,
+    "noAdjustments": true,
+    "noSubscription": true,
+    "noConnect": true,
+    "noSplit": true
+  }
+}

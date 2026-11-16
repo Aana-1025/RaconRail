@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "rr-evidence-v1",
+  "captureId": "00000000-0000-4000-8000-000000000001",
+  "providerNamespace": {
+    "provider": "stripe",
+    "accountId": "acct_demo",
+    "sandboxId": "sandbox_demo",
+    "livemode": false
+  },
+  "appNamespace": {
+    "systemId": "demo_orders",
+    "environmentId": "sandbox"
+  },
+  "exporterVersion": "synthetic-example-v1",
+  "capturedAt": "2026-01-01T10:10:01Z",
+  "coverage": "selected",
+  "role": "application",
+  "sourceVersion": "rr-app-export-v1",
+  "records": [
+    {
+      "kind": "order",
+      "id": "order_demo",
+      "observation": {
+        "readStart": "2026-01-01T10:10:00Z",
+        "readEnd": "2026-01-01T10:10:01Z",
+        "clockErrorUs": "0"
+      },
+      "paymentReference": "pi_demo",
+      "paymentState": "awaiting_payment",
+      "rawPaymentState": "awaiting_payment",
+      "expectedAmount": "1000",
+      "expectedCurrency": "USD",
+      "expectationRevision": "rev1"
+    }
+  ]
+}

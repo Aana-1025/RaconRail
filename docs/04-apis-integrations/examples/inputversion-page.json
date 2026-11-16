@@ -1,0 +1,44 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "ordinal": "1",
+      "digests": {
+        "provider": "5d5b2edf85a39b7b582a07645d66b0c3fceaf9744c2df3b802eb894adfe55b72",
+        "application": "456eb0fff21bc55e248320c7d2c6529e4d8e93e6e96447743627471738fd2c31"
+      },
+      "versions": {
+        "normalizerVersion": "stripe-card-order-normalizer-v1"
+      },
+      "namespaces": {
+        "provider": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "application": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        }
+      },
+      "captureContext": {
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerCapturedAt": "2026-01-01T10:10:01Z",
+        "applicationCapturedAt": "2026-01-01T10:10:01Z",
+        "providerCoverage": "selected",
+        "applicationCoverage": "selected",
+        "providerSourceVersion": "2025-09-30.clover",
+        "applicationSourceVersion": "rr-app-export-v1",
+        "providerExporterVersion": "synthetic-example-v1",
+        "applicationExporterVersion": "synthetic-example-v1"
+      },
+      "counts": {
+        "paymentIntents": "1",
+        "charges": "1",
+        "orders": "1"
+      },
+      "validationSystemMs": "100"
+    }
+  ]
+}

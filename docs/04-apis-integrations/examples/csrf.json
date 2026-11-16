@@ -1,0 +1,4 @@
+{
+  "token": "synthetic-csrf-token",
+  "headerName": "X-CSRF-TOKEN"
+}

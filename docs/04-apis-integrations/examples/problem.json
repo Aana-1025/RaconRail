@@ -1,0 +1,9 @@
+{
+  "type": "urn:reconrail:problem:idempotency_conflict",
+  "title": "Command intent differs",
+  "status": 409,
+  "detail": "Use the original command identity to reconcile its outcome.",
+  "instance": "urn:uuid:00000000-0000-4000-8000-000000000007",
+  "code": "idempotency_conflict",
+  "requestId": "00000000-0000-4000-8000-000000000007"
+}

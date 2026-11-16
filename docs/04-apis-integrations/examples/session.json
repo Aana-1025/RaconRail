@@ -1,0 +1,13 @@
+{
+  "accountId": "00000000-0000-4000-8000-000000000009",
+  "workspaceId": "00000000-0000-4000-8000-000000000010",
+  "sessionGeneration": "1",
+  "expiresAt": "2026-01-01T18:00:00Z",
+  "capabilities": [
+    "CREATE_CASE",
+    "IMPORT",
+    "ANALYZE",
+    "DELETE_CASE",
+    "CLOSE_ACCOUNT"
+  ]
+}

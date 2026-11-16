@@ -1,0 +1,16 @@
+{
+  "title": "Synthetic overdue app update",
+  "purposeContext": {
+    "purpose": "Synthetic investigation example"
+  },
+  "providerNamespace": {
+    "provider": "stripe",
+    "accountId": "acct_demo",
+    "sandboxId": "sandbox_demo",
+    "livemode": false
+  },
+  "appNamespace": {
+    "systemId": "demo_orders",
+    "environmentId": "sandbox"
+  }
+}

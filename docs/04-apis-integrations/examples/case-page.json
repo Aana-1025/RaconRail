@@ -1,0 +1,27 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "title": "Synthetic overdue app update",
+      "purposeContext": {
+        "purpose": "Synthetic investigation example"
+      },
+      "namespaces": {
+        "provider": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "application": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        }
+      },
+      "state": "ACTIVE",
+      "generation": "1",
+      "createdAt": "2026-01-01T10:11:00Z",
+      "updatedAt": "2026-01-01T10:11:00Z"
+    }
+  ]
+}

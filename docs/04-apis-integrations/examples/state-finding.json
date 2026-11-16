@@ -1,0 +1,29 @@
+{
+  "id": "00000000-0000-4000-8000-000000000006",
+  "ruleId": "DOM-F-001",
+  "classification": "DISCREPANCY",
+  "subjectKind": "ORDER",
+  "subjectId": "order_demo",
+  "sourceRefs": [
+    {
+      "artifactRole": "provider",
+      "recordIndex": 0,
+      "fieldPointer": "/status"
+    },
+    {
+      "artifactRole": "application",
+      "recordIndex": 0,
+      "fieldPointer": "/paymentState"
+    }
+  ],
+  "explanationCode": "APP_AWAITING_AFTER_DECLARED_GRACE",
+  "qualifiers": [
+    "DECLARED_NONATOMIC_CAPTURE"
+  ],
+  "observedValues": {
+    "providerState": "succeeded",
+    "applicationState": "awaiting_payment",
+    "elapsedLowerBoundUs": "600000000",
+    "graceUs": "60000000"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "inputVersionId": "00000000-0000-4000-8000-000000000003",
+  "inputDigests": {
+    "provider": "5d5b2edf85a39b7b582a07645d66b0c3fceaf9744c2df3b802eb894adfe55b72",
+    "application": "456eb0fff21bc55e248320c7d2c6529e4d8e93e6e96447743627471738fd2c31"
+  },
+  "reviewDigest": "3a93a3e75f9dedf43cb69c3784b682f0dc826409da309effd4ffff76185b08ae",
+  "rulesVersion": "stripe-card-order-v1",
+  "currencyVersion": "rr-currency-v1",
+  "normalizerVersion": "stripe-card-order-normalizer-v1",
+  "config": {
+    "graceUs": "60000000",
+    "flowDeclarations": {
+      "oneTime": true,
+      "fullOriginal": true,
+      "automaticCapture": true,
+      "noAdjustments": true,
+      "noSubscription": true,
+      "noConnect": true,
+      "noSplit": true
+    }
+  },
+  "referenceAt": "2026-01-01T10:12:00Z"
+}

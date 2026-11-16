@@ -1,0 +1,57 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "inputVersionId": "00000000-0000-4000-8000-000000000003",
+      "versions": {
+        "rulesVersion": "stripe-card-order-v1",
+        "currencyVersion": "rr-currency-v1",
+        "normalizerVersion": "stripe-card-order-normalizer-v1"
+      },
+      "configDigest": "5f19caff2fb748aed1538b0da519f1d385ae45d8c0ce68f33c70a2bb70d4be9e",
+      "referenceAt": "2026-01-01T10:12:00Z",
+      "state": "PUBLISHED",
+      "attemptCount": 1,
+      "requestedAt": "2026-01-01T10:12:00Z",
+      "deadlineAt": "2026-01-01T10:13:59.9Z",
+      "summary": {
+        "inputCounts": {
+          "paymentIntents": "1",
+          "charges": "1",
+          "orders": "1"
+        },
+        "checks": {
+          "state": {
+            "eligible": "1",
+            "consistent": "0",
+            "discrepancy": "1",
+            "moreEvidenceNeeded": "0",
+            "unsupported": "0",
+            "ambiguous": "0"
+          },
+          "currency": {
+            "eligible": "1",
+            "consistent": "1",
+            "discrepancy": "0",
+            "moreEvidenceNeeded": "0",
+            "unsupported": "0",
+            "ambiguous": "0"
+          },
+          "amount": {
+            "eligible": "1",
+            "consistent": "1",
+            "discrepancy": "0",
+            "moreEvidenceNeeded": "0",
+            "unsupported": "0",
+            "ambiguous": "0"
+          }
+        },
+        "findingCount": "3",
+        "qualifiers": [
+          "DECLARED_NONATOMIC_CAPTURE",
+          "SOURCE_AUTHENTICITY_UNVERIFIED"
+        ]
+      }
+    }
+  ]
+}

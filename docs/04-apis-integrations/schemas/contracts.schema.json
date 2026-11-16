@@ -1,0 +1,2080 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reconrail:schema:contracts-v1",
+  "title": "ReconRail v1 approved planning contracts",
+  "$defs": {
+    "Uuid": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$"
+    },
+    "Instant": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?!0000)[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-5][0-9](\\.[0-9]{1,6})?Z$"
+    },
+    "Money": {
+      "type": "string",
+      "pattern": "^(0|-?[1-9][0-9]{0,37})$"
+    },
+    "Unsigned": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,18})$",
+      "x-maxInteger": "9223372036854775807"
+    },
+    "Positive": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]{0,18}$",
+      "x-maxInteger": "9223372036854775807"
+    },
+    "Duration": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,17})$",
+      "x-maxInteger": "315576000000000000"
+    },
+    "Digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "Secret": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "description": "Base64url without padding, exactly32 decoded bytes; decode/re-encode must match."
+    },
+    "ProviderNamespace": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "const": "stripe"
+        },
+        "accountId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "sandboxId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "livemode": {
+          "const": false
+        }
+      },
+      "required": [
+        "provider",
+        "accountId",
+        "sandboxId",
+        "livemode"
+      ],
+      "additionalProperties": false
+    },
+    "AppNamespace": {
+      "type": "object",
+      "properties": {
+        "systemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "environmentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        }
+      },
+      "required": [
+        "systemId",
+        "environmentId"
+      ],
+      "additionalProperties": false
+    },
+    "PurposeContext": {
+      "type": "object",
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 1024,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 1024
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "Observation": {
+      "type": "object",
+      "properties": {
+        "readStart": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Instant"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "readEnd": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Instant"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "clockErrorUs": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "PaymentIntent": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "payment_intent"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "observation": {
+          "$ref": "#/$defs/Observation"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "captureMethod": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amountReceived": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amountCapturable": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latestChargeId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "observation"
+      ],
+      "additionalProperties": false
+    },
+    "Charge": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "charge"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "observation": {
+          "$ref": "#/$defs/Observation"
+        },
+        "paymentIntentId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "paid": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "captured": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disputed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amountCaptured": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amountRefunded": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actualMethodType": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "observation"
+      ],
+      "additionalProperties": false
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "order"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "observation": {
+          "$ref": "#/$defs/Observation"
+        },
+        "paymentReference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "paymentState": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rawPaymentState": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expectedAmount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expectedCurrency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expectationRevision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "observation"
+      ],
+      "additionalProperties": false
+    },
+    "ProviderArtifact": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "rr-evidence-v1"
+        },
+        "role": {
+          "const": "provider"
+        },
+        "captureId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "providerNamespace": {
+          "$ref": "#/$defs/ProviderNamespace"
+        },
+        "appNamespace": {
+          "$ref": "#/$defs/AppNamespace"
+        },
+        "sourceVersion": {
+          "const": "2025-09-30.clover"
+        },
+        "exporterVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "capturedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "coverage": {
+          "type": "string",
+          "enum": [
+            "selected",
+            "complete",
+            "unknown"
+          ]
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/PaymentIntent"
+              },
+              {
+                "$ref": "#/$defs/Charge"
+              }
+            ]
+          },
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "role",
+        "captureId",
+        "providerNamespace",
+        "appNamespace",
+        "sourceVersion",
+        "exporterVersion",
+        "capturedAt",
+        "coverage",
+        "records"
+      ],
+      "additionalProperties": false
+    },
+    "ApplicationArtifact": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "rr-evidence-v1"
+        },
+        "role": {
+          "const": "application"
+        },
+        "captureId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "providerNamespace": {
+          "$ref": "#/$defs/ProviderNamespace"
+        },
+        "appNamespace": {
+          "$ref": "#/$defs/AppNamespace"
+        },
+        "sourceVersion": {
+          "const": "rr-app-export-v1"
+        },
+        "exporterVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "capturedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "coverage": {
+          "type": "string",
+          "enum": [
+            "selected",
+            "complete",
+            "unknown"
+          ]
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Order"
+          },
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "role",
+        "captureId",
+        "providerNamespace",
+        "appNamespace",
+        "sourceVersion",
+        "exporterVersion",
+        "capturedAt",
+        "coverage",
+        "records"
+      ],
+      "additionalProperties": false
+    },
+    "FlowDeclarations": {
+      "type": "object",
+      "properties": {
+        "oneTime": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "fullOriginal": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "automaticCapture": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "noAdjustments": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "noSubscription": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "noConnect": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "noSplit": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "oneTime",
+        "fullOriginal",
+        "automaticCapture",
+        "noAdjustments",
+        "noSubscription",
+        "noConnect",
+        "noSplit"
+      ],
+      "additionalProperties": false
+    },
+    "RunConfig": {
+      "type": "object",
+      "properties": {
+        "graceUs": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "freshnessLimitUs": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "flowDeclarations": {
+          "$ref": "#/$defs/FlowDeclarations"
+        }
+      },
+      "required": [
+        "flowDeclarations"
+      ],
+      "additionalProperties": false
+    },
+    "Digests": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/$defs/Digest"
+        },
+        "application": {
+          "$ref": "#/$defs/Digest"
+        }
+      },
+      "required": [
+        "provider",
+        "application"
+      ],
+      "additionalProperties": false
+    },
+    "Versions": {
+      "type": "object",
+      "properties": {
+        "rulesVersion": {
+          "const": "stripe-card-order-v1"
+        },
+        "currencyVersion": {
+          "const": "rr-currency-v1"
+        },
+        "normalizerVersion": {
+          "const": "stripe-card-order-normalizer-v1"
+        }
+      },
+      "required": [
+        "rulesVersion",
+        "currencyVersion",
+        "normalizerVersion"
+      ],
+      "additionalProperties": false
+    },
+    "Namespaces": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/$defs/ProviderNamespace"
+        },
+        "application": {
+          "$ref": "#/$defs/AppNamespace"
+        }
+      },
+      "required": [
+        "provider",
+        "application"
+      ],
+      "additionalProperties": false
+    },
+    "Counts": {
+      "type": "object",
+      "properties": {
+        "paymentIntents": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "charges": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "orders": {
+          "$ref": "#/$defs/Unsigned"
+        }
+      },
+      "required": [
+        "paymentIntents",
+        "charges",
+        "orders"
+      ],
+      "additionalProperties": false
+    },
+    "CreateCase": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 1024,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 1024
+        },
+        "purposeContext": {
+          "$ref": "#/$defs/PurposeContext"
+        },
+        "providerNamespace": {
+          "$ref": "#/$defs/ProviderNamespace"
+        },
+        "appNamespace": {
+          "$ref": "#/$defs/AppNamespace"
+        }
+      },
+      "required": [
+        "purposeContext",
+        "providerNamespace",
+        "appNamespace"
+      ],
+      "additionalProperties": false
+    },
+    "PatchCase": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 1024,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 1024
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "purposeContext": {
+          "$ref": "#/$defs/PurposeContext"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "StartRun": {
+      "type": "object",
+      "properties": {
+        "inputVersionId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "inputDigests": {
+          "$ref": "#/$defs/Digests"
+        },
+        "reviewDigest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "rulesVersion": {
+          "const": "stripe-card-order-v1"
+        },
+        "currencyVersion": {
+          "const": "rr-currency-v1"
+        },
+        "normalizerVersion": {
+          "const": "stripe-card-order-normalizer-v1"
+        },
+        "config": {
+          "$ref": "#/$defs/RunConfig"
+        },
+        "referenceAt": {
+          "$ref": "#/$defs/Instant"
+        }
+      },
+      "required": [
+        "inputVersionId",
+        "inputDigests",
+        "reviewDigest",
+        "rulesVersion",
+        "currencyVersion",
+        "normalizerVersion",
+        "config"
+      ],
+      "additionalProperties": false
+    },
+    "Confirm": {
+      "type": "object",
+      "properties": {
+        "confirm": {
+          "const": true
+        }
+      },
+      "required": [
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "DeleteCase": {
+      "type": "object",
+      "properties": {
+        "expectedGeneration": {
+          "$ref": "#/$defs/Positive"
+        },
+        "confirm": {
+          "const": true
+        }
+      },
+      "required": [
+        "expectedGeneration",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "CloseAccount": {
+      "type": "object",
+      "properties": {
+        "closureConfirmation": {
+          "$ref": "#/$defs/Secret"
+        },
+        "expectedGeneration": {
+          "$ref": "#/$defs/Positive"
+        },
+        "confirm": {
+          "const": true
+        }
+      },
+      "required": [
+        "closureConfirmation",
+        "expectedGeneration",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "LookupReceipt": {
+      "type": "object",
+      "properties": {
+        "receipt": {
+          "$ref": "#/$defs/Secret"
+        }
+      },
+      "required": [
+        "receipt"
+      ],
+      "additionalProperties": false
+    },
+    "ErrorEntry": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 256
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        }
+      },
+      "required": [
+        "path",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "Problem": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^urn:reconrail:problem:[a-z_]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 400,
+          "maximum": 599
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 512
+        },
+        "instance": {
+          "type": "string",
+          "pattern": "^urn:uuid:"
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "requestId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "retryAfterSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3600
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ErrorEntry"
+          },
+          "maxItems": 20
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "detail",
+        "instance",
+        "code",
+        "requestId"
+      ],
+      "additionalProperties": true
+    },
+    "WorkspaceUsage": {
+      "type": "object",
+      "properties": {
+        "quotaBytes": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "usedBytes": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "reservedBytes": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "availableBytes": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "accountingVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "observedAt": {
+          "$ref": "#/$defs/Instant"
+        }
+      },
+      "required": [
+        "quotaBytes",
+        "usedBytes",
+        "reservedBytes",
+        "availableBytes",
+        "accountingVersion",
+        "observedAt"
+      ],
+      "additionalProperties": true
+    },
+    "Session": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "workspaceId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "sessionGeneration": {
+          "$ref": "#/$defs/Positive"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "CREATE_CASE",
+              "IMPORT",
+              "ANALYZE",
+              "DELETE_CASE",
+              "CLOSE_ACCOUNT"
+            ]
+          },
+          "maxItems": 5
+        },
+        "closureConfirmation": {
+          "$ref": "#/$defs/Secret"
+        }
+      },
+      "required": [
+        "accountId",
+        "workspaceId",
+        "sessionGeneration",
+        "expiresAt",
+        "capabilities"
+      ],
+      "additionalProperties": true
+    },
+    "Csrf": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 512
+        },
+        "headerName": {
+          "const": "X-CSRF-TOKEN"
+        }
+      },
+      "required": [
+        "token",
+        "headerName"
+      ],
+      "additionalProperties": true
+    },
+    "Case": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 1024,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 1024
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "purposeContext": {
+          "$ref": "#/$defs/PurposeContext"
+        },
+        "namespaces": {
+          "$ref": "#/$defs/Namespaces"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "generation": {
+          "$ref": "#/$defs/Positive"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/Instant"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "purposeContext",
+        "namespaces",
+        "state",
+        "generation",
+        "createdAt",
+        "updatedAt"
+      ],
+      "additionalProperties": true
+    },
+    "Intake": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "RECEIVING",
+            "VALIDATION_PENDING",
+            "VALIDATING",
+            "VALIDATED",
+            "ACCEPTED",
+            "REJECTED",
+            "LOST",
+            "EXPIRED"
+          ]
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ErrorEntry"
+          },
+          "maxItems": 20
+        },
+        "counts": {
+          "$ref": "#/$defs/Counts"
+        },
+        "inputVersionId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "validationSystemMs": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "state",
+        "errors",
+        "expiresAt"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "ACCEPTED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "inputVersionId",
+              "counts",
+              "validationSystemMs"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "inputVersionId"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "CaptureContext": {
+      "type": "object",
+      "properties": {
+        "captureId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "providerCapturedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "applicationCapturedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "providerCoverage": {
+          "type": "string",
+          "enum": [
+            "selected",
+            "complete",
+            "unknown"
+          ]
+        },
+        "applicationCoverage": {
+          "type": "string",
+          "enum": [
+            "selected",
+            "complete",
+            "unknown"
+          ]
+        },
+        "providerSourceVersion": {
+          "const": "2025-09-30.clover"
+        },
+        "applicationSourceVersion": {
+          "const": "rr-app-export-v1"
+        },
+        "providerExporterVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "applicationExporterVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        }
+      },
+      "required": [
+        "captureId",
+        "providerCapturedAt",
+        "applicationCapturedAt",
+        "providerCoverage",
+        "applicationCoverage",
+        "providerSourceVersion",
+        "applicationSourceVersion",
+        "providerExporterVersion",
+        "applicationExporterVersion"
+      ],
+      "additionalProperties": false
+    },
+    "InputVersion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "ordinal": {
+          "$ref": "#/$defs/Positive"
+        },
+        "digests": {
+          "$ref": "#/$defs/Digests"
+        },
+        "versions": {
+          "type": "object",
+          "properties": {
+            "normalizerVersion": {
+              "const": "stripe-card-order-normalizer-v1"
+            }
+          },
+          "required": [
+            "normalizerVersion"
+          ],
+          "additionalProperties": false
+        },
+        "namespaces": {
+          "$ref": "#/$defs/Namespaces"
+        },
+        "captureContext": {
+          "$ref": "#/$defs/CaptureContext"
+        },
+        "counts": {
+          "$ref": "#/$defs/Counts"
+        },
+        "validationSystemMs": {
+          "$ref": "#/$defs/Unsigned"
+        }
+      },
+      "required": [
+        "id",
+        "ordinal",
+        "digests",
+        "versions",
+        "namespaces",
+        "captureContext",
+        "counts",
+        "validationSystemMs"
+      ],
+      "additionalProperties": true
+    },
+    "CheckCounts": {
+      "type": "object",
+      "properties": {
+        "eligible": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "consistent": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "discrepancy": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "moreEvidenceNeeded": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "unsupported": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "ambiguous": {
+          "$ref": "#/$defs/Unsigned"
+        }
+      },
+      "required": [
+        "eligible",
+        "consistent",
+        "discrepancy",
+        "moreEvidenceNeeded",
+        "unsupported",
+        "ambiguous"
+      ],
+      "additionalProperties": false
+    },
+    "Summary": {
+      "type": "object",
+      "properties": {
+        "inputCounts": {
+          "$ref": "#/$defs/Counts"
+        },
+        "checks": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "$ref": "#/$defs/CheckCounts"
+            },
+            "currency": {
+              "$ref": "#/$defs/CheckCounts"
+            },
+            "amount": {
+              "$ref": "#/$defs/CheckCounts"
+            }
+          },
+          "required": [
+            "state",
+            "currency",
+            "amount"
+          ],
+          "additionalProperties": false
+        },
+        "findingCount": {
+          "$ref": "#/$defs/Unsigned"
+        },
+        "qualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "inputCounts",
+        "checks",
+        "findingCount",
+        "qualifiers"
+      ],
+      "additionalProperties": true
+    },
+    "Run": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "inputVersionId": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "versions": {
+          "$ref": "#/$defs/Versions"
+        },
+        "configDigest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "referenceAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "QUEUED",
+            "RUNNING",
+            "RETRY_WAIT",
+            "PUBLISHED",
+            "FAILED",
+            "EXPIRED",
+            "SUPPRESSED"
+          ]
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "requestedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "deadlineAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "summary": {
+          "$ref": "#/$defs/Summary"
+        }
+      },
+      "required": [
+        "id",
+        "inputVersionId",
+        "versions",
+        "configDigest",
+        "referenceAt",
+        "state",
+        "attemptCount",
+        "requestedAt",
+        "deadlineAt"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "PUBLISHED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "summary"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "summary"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "SourceRef": {
+      "type": "object",
+      "properties": {
+        "artifactRole": {
+          "type": "string",
+          "enum": [
+            "provider",
+            "application"
+          ]
+        },
+        "recordIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "fieldPointer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 256
+        }
+      },
+      "required": [
+        "artifactRole",
+        "recordIndex",
+        "fieldPointer"
+      ],
+      "additionalProperties": true
+    },
+    "ObservedValues": {
+      "type": "object",
+      "properties": {
+        "providerAmount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expectedAmount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "providerCurrency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expectedCurrency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "providerState": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "applicationState": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "elapsedLowerBoundUs": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "graceUs": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "paymentReference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[^\\u0000]*$",
+              "x-maxUtf8Bytes": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    },
+    "Finding": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "ruleId": {
+          "type": "string",
+          "enum": [
+            "DOM-F-001",
+            "DOM-F-002",
+            "DOM-F-003"
+          ]
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "CONSISTENT",
+            "DISCREPANCY",
+            "MORE_EVIDENCE_NEEDED",
+            "UNSUPPORTED",
+            "AMBIGUOUS"
+          ]
+        },
+        "subjectKind": {
+          "type": "string",
+          "enum": [
+            "PAYMENT_INTENT",
+            "CHARGE",
+            "ORDER"
+          ]
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "maxItems": 16
+        },
+        "explanationCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "qualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "maxItems": 32
+        },
+        "observedValues": {
+          "$ref": "#/$defs/ObservedValues"
+        }
+      },
+      "required": [
+        "id",
+        "ruleId",
+        "classification",
+        "subjectKind",
+        "subjectId",
+        "sourceRefs",
+        "explanationCode",
+        "qualifiers",
+        "observedValues"
+      ],
+      "additionalProperties": true
+    },
+    "FindingListItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "ruleId": {
+          "type": "string",
+          "enum": [
+            "DOM-F-001",
+            "DOM-F-002",
+            "DOM-F-003"
+          ]
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "CONSISTENT",
+            "DISCREPANCY",
+            "MORE_EVIDENCE_NEEDED",
+            "UNSUPPORTED",
+            "AMBIGUOUS"
+          ]
+        },
+        "subjectKind": {
+          "type": "string",
+          "enum": [
+            "PAYMENT_INTENT",
+            "CHARGE",
+            "ORDER"
+          ]
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 255
+        },
+        "explanationCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 128
+        },
+        "qualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000]*$",
+            "x-maxUtf8Bytes": 128
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "id",
+        "ruleId",
+        "classification",
+        "subjectKind",
+        "subjectId",
+        "explanationCode",
+        "qualifiers"
+      ],
+      "additionalProperties": true
+    },
+    "Record": {
+      "type": "object",
+      "properties": {
+        "record": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/PaymentIntent"
+            },
+            {
+              "$ref": "#/$defs/Charge"
+            },
+            {
+              "$ref": "#/$defs/Order"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "record",
+        "source"
+      ],
+      "additionalProperties": true
+    },
+    "Operation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Uuid"
+        },
+        "phase": {
+          "type": "string",
+          "enum": [
+            "PREPARING",
+            "JOURNALED",
+            "FENCED",
+            "CLEANING",
+            "ACTIVE_DATA_REMOVED",
+            "RETIREMENT_PENDING",
+            "RETIRED"
+          ]
+        },
+        "deniedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "activeRemovedAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "retiredAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "deadlineBase": {
+          "$ref": "#/$defs/Instant"
+        },
+        "retentionBreach": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "phase",
+        "deadlineBase",
+        "retentionBreach"
+      ],
+      "additionalProperties": true
+    },
+    "ClosureAccepted": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "$ref": "#/$defs/Operation"
+        },
+        "statusReceipt": {
+          "$ref": "#/$defs/Secret"
+        }
+      },
+      "required": [
+        "operation"
+      ],
+      "additionalProperties": true
+    },
+    "CommandResult": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "COMMITTED",
+            "PENDING"
+          ]
+        },
+        "effectKind": {
+          "type": "string",
+          "enum": [
+            "CASE",
+            "INTAKE",
+            "RUN",
+            "OPERATION",
+            "REAUTHENTICATION"
+          ]
+        },
+        "effectId": {
+          "$ref": "#/$defs/Uuid"
+        }
+      },
+      "required": [
+        "state",
+        "effectKind"
+      ],
+      "additionalProperties": true
+    },
+    "CasePage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Case"
+          },
+          "maxItems": 50
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 2048
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": true
+    },
+    "IntakePage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Intake"
+          },
+          "maxItems": 50
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 2048
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": true
+    },
+    "InputVersionPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InputVersion"
+          },
+          "maxItems": 50
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 2048
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": true
+    },
+    "RecordPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Record"
+          },
+          "maxItems": 50
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 2048
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": true
+    },
+    "RunPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Run"
+          },
+          "maxItems": 50
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 2048
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": true
+    },
+    "FindingListItemPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FindingListItem"
+          },
+          "maxItems": 50
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000]*$",
+          "x-maxUtf8Bytes": 2048
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "description": "Nonstandard x- limits require semantic validator; no app implementation."
+}

@@ -1,0 +1,90 @@
+{
+  "synthetic": true,
+  "examples": [
+    {
+      "file": "provider.json",
+      "schema": "ProviderArtifact"
+    },
+    {
+      "file": "application.json",
+      "schema": "ApplicationArtifact"
+    },
+    {
+      "file": "create-case.json",
+      "schema": "CreateCase"
+    },
+    {
+      "file": "case.json",
+      "schema": "Case"
+    },
+    {
+      "file": "input.json",
+      "schema": "InputVersion"
+    },
+    {
+      "file": "config.json",
+      "schema": "RunConfig"
+    },
+    {
+      "file": "intake.json",
+      "schema": "Intake"
+    },
+    {
+      "file": "start-run.json",
+      "schema": "StartRun"
+    },
+    {
+      "file": "published-run.json",
+      "schema": "Run"
+    },
+    {
+      "file": "state-finding.json",
+      "schema": "Finding"
+    },
+    {
+      "file": "problem.json",
+      "schema": "Problem"
+    },
+    {
+      "file": "operation.json",
+      "schema": "Operation"
+    },
+    {
+      "file": "closure-accepted.json",
+      "schema": "ClosureAccepted"
+    },
+    {
+      "file": "session.json",
+      "schema": "Session"
+    },
+    {
+      "file": "csrf.json",
+      "schema": "Csrf"
+    },
+    {
+      "file": "command.json",
+      "schema": "CommandResult"
+    },
+    {
+      "file": "case-page.json",
+      "schema": "CasePage"
+    },
+    {
+      "file": "inputversion-page.json",
+      "schema": "InputVersionPage"
+    },
+    {
+      "file": "run-page.json",
+      "schema": "RunPage"
+    },
+    {
+      "file": "workspace-usage.json",
+      "schema": "WorkspaceUsage"
+    }
+  ],
+  "digests": {
+    "provider": "5d5b2edf85a39b7b582a07645d66b0c3fceaf9744c2df3b802eb894adfe55b72",
+    "application": "456eb0fff21bc55e248320c7d2c6529e4d8e93e6e96447743627471738fd2c31"
+  },
+  "expectedBusinessInterpretation": "Author-reviewed DOM-AC-001 mapping only: state discrepancy; currency/amount consistent. No engine executed."
+}

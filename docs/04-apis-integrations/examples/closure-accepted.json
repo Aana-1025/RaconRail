@@ -1,0 +1,10 @@
+{
+  "operation": {
+    "id": "00000000-0000-4000-8000-000000000008",
+    "phase": "FENCED",
+    "deniedAt": "2026-01-01T11:00:00Z",
+    "deadlineBase": "2026-01-01T10:59:59Z",
+    "retentionBreach": false
+  },
+  "statusReceipt": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+}
