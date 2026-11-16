@@ -45,3 +45,5 @@ __pycache__/
 /docs/04-apis-integrations/validation-report.json
 /docs/07-frontend/*
 !/docs/07-frontend/orbit-tokens.json
+
+!/docs/database.md

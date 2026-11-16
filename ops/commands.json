@@ -1,24 +1,123 @@
 {
   "version": 1,
   "suites": {
-    "preflight": {"status":"IMPLEMENTED","commands":["java-version","javac-version","node-version","npm-version"]},
-    "build": {"status":"IMPLEMENTED","commands":["java-version","javac-version","node-version","npm-version","npm-ci","maven-verify"]},
-    "domain": {"status":"BLOCKED","reason":"Financial evaluator and independent oracles not implemented."},
-    "pg": {"status":"BLOCKED","reason":"Actual PostgreSQL migrations and transaction tests not implemented."},
-    "http": {"status":"BLOCKED","reason":"Full API contract suite unavailable; shell HTTP checks run in build only."},
-    "security": {"status":"BLOCKED","reason":"Full authentication/authorization/session/tenant verification unavailable."},
-    "fault": {"status":"BLOCKED","reason":"Actual authority, worker and recovery fault suites unavailable."},
-    "ui": {"status":"BLOCKED","reason":"Complete workflow/manual accessibility suite unavailable; component smoke runs in build only."},
-    "quality": {"status":"BLOCKED","reason":"D-008 performance/accessibility/recovery acceptance not implemented."},
-    "infra": {"status":"BLOCKED","reason":"Hosted adapter/restore/deployment verification unavailable."},
-    "all": {"status":"BLOCKED","reason":"Full required suites remain unavailable; build success is not full verification."}
+    "preflight": {
+      "status": "IMPLEMENTED",
+      "commands": [
+        "java-version",
+        "javac-version",
+        "node-version",
+        "npm-version"
+      ]
+    },
+    "build": {
+      "status": "IMPLEMENTED",
+      "commands": [
+        "java-version",
+        "javac-version",
+        "node-version",
+        "npm-version",
+        "npm-ci",
+        "maven-verify"
+      ]
+    },
+    "domain": {
+      "status": "BLOCKED",
+      "reason": "Financial evaluator and independent oracles not implemented."
+    },
+    "pg": {
+      "status": "IMPLEMENTED",
+      "commands": [
+        "pg-verify"
+      ]
+    },
+    "http": {
+      "status": "BLOCKED",
+      "reason": "Full API contract suite unavailable; shell HTTP checks run in build only."
+    },
+    "security": {
+      "status": "BLOCKED",
+      "reason": "Full authentication/authorization/session/tenant verification unavailable."
+    },
+    "fault": {
+      "status": "BLOCKED",
+      "reason": "Actual authority, worker and recovery fault suites unavailable."
+    },
+    "ui": {
+      "status": "BLOCKED",
+      "reason": "Complete workflow/manual accessibility suite unavailable; component smoke runs in build only."
+    },
+    "quality": {
+      "status": "BLOCKED",
+      "reason": "D-008 performance/accessibility/recovery acceptance not implemented."
+    },
+    "infra": {
+      "status": "BLOCKED",
+      "reason": "Hosted adapter/restore/deployment verification unavailable."
+    },
+    "all": {
+      "status": "BLOCKED",
+      "reason": "Full required suites remain unavailable; build success is not full verification."
+    }
   },
   "commands": {
-    "java-version":{"argv":["{java}","-version"],"expected":"version \"25\\."},
-    "javac-version":{"argv":["{javac}","-version"],"expected":"^javac 25\\."},
-    "node-version":{"argv":["{node}","--version"],"expected":"^v24\\."},
-    "npm-version":{"argv":["{node}","{npm_cli}","--version"],"expected":"^11\\."},
-    "npm-ci":{"argv":["{node}","{npm_cli}","ci","--prefix","frontend","--ignore-scripts","--no-fund","--cache","{npm_cache}"]},
-    "maven-verify":{"argv":["{wrapper}","--batch-mode","--settings",".mvn/settings.xml","-Dmaven.repo.local={maven_repo}","verify"]}
+    "java-version": {
+      "argv": [
+        "{java}",
+        "-version"
+      ],
+      "expected": "version \"25\\."
+    },
+    "javac-version": {
+      "argv": [
+        "{javac}",
+        "-version"
+      ],
+      "expected": "^javac 25\\."
+    },
+    "node-version": {
+      "argv": [
+        "{node}",
+        "--version"
+      ],
+      "expected": "^v24\\."
+    },
+    "npm-version": {
+      "argv": [
+        "{node}",
+        "{npm_cli}",
+        "--version"
+      ],
+      "expected": "^11\\."
+    },
+    "npm-ci": {
+      "argv": [
+        "{node}",
+        "{npm_cli}",
+        "ci",
+        "--prefix",
+        "frontend",
+        "--ignore-scripts",
+        "--no-fund",
+        "--cache",
+        "{npm_cache}"
+      ]
+    },
+    "maven-verify": {
+      "argv": [
+        "{wrapper}",
+        "--batch-mode",
+        "--settings",
+        ".mvn/settings.xml",
+        "-Dmaven.repo.local={maven_repo}",
+        "verify"
+      ]
+    },
+    "pg-verify": {
+      "argv": [
+        "{python}",
+        "ops/verify_pg.py"
+      ]
+    }
   }
 }

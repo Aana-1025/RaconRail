@@ -47,7 +47,7 @@ def execute(suite, task, *, root=ROOT, run=subprocess.run):
         if not all(p.is_file() for p in [java,javac,node,npm_cli]):return finish(2,'BLOCKED','Missing exact Java/Node/npm prerequisites')
         env.update(JAVA_HOME=str(java_home),RR_NODE=str(node),RR_NPM_CLI=str(npm_cli),MAVEN_USER_HOME=str(root/'.local-tools/maven-user'))
         env['PATH']=str(java.parent)+os.pathsep+str(node.parent)+os.pathsep+env.get('PATH','')
-        substitutions={'java':str(java),'javac':str(javac),'node':str(node),'npm_cli':str(npm_cli),'npm_cache':str(root/'.local-tools/npm-cache'),'maven_repo':str(root/'.local-tools/m2/repository'),'wrapper':str(root/('mvnw.cmd' if os.name=='nt' else 'mvnw'))}
+        substitutions={'python':sys.executable,'java':str(java),'javac':str(javac),'node':str(node),'npm_cli':str(npm_cli),'npm_cache':str(root/'.local-tools/npm-cache'),'maven_repo':str(root/'.local-tools/m2/repository'),'wrapper':str(root/('mvnw.cmd' if os.name=='nt' else 'mvnw'))}
         for ident in chosen['commands']:
             spec=manifest['commands'][ident];argv=[a.format(**substitutions) for a in spec['argv']]
             if ident=='maven-verify' and os.name!='nt':argv=['sh',*argv]

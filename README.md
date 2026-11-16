@@ -6,7 +6,7 @@ Compare saved sandbox payment evidence with an independent application expectati
 
 The application currently provides a public overview, guide and interactive synthetic example in a packaged Java application. The Orbit interface uses CSS sculpture, floating evidence cards and motion controls. Sign-in, workspace, account and closure routes clearly indicate that their features are unavailable.
 
-Authentication, uploads, PostgreSQL persistence and the financial evaluator are planned. The example does not perform reconciliation or make financial correctness claims. No live payment integration is included.
+The PostgreSQL migration foundation and isolated database verification are implemented. Authentication, uploads, application persistence wiring and the financial evaluator are planned. The example does not perform reconciliation or make financial correctness claims. No live payment integration is included.
 
 ## Build
 
@@ -39,3 +39,17 @@ Open http://127.0.0.1:8080/. The default bind address is loopback. Routes includ
 See [product architecture](docs/product-architecture.md), [API specification](docs/04-apis-integrations/openapi.json) and [design tokens](docs/07-frontend/orbit-tokens.json). API contracts describe intended behavior; only the shell is currently implemented.
 
 See [third-party dependencies](THIRD_PARTY.md) for dependency and notice information.
+
+## Database verification
+
+With Docker running, fetch the pinned test image, then run the real PostgreSQL suite:
+
+```sh
+docker pull postgres@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162593691c61bbc
+```
+
+```powershell
+./ops/rr.ps1 verify -Suite pg -Task RR-03
+```
+
+Linux: `python3 ops/run_commands.py --suite pg --task RR-03`. The suite creates its own disposable PostgreSQL18.7 container and synthetic databases, validates Flyway migrations and database integrity/security boundaries, then removes only that container. It requires Python3, Java25 and Docker access; the dispatcher also verifies the standard Node/npm prerequisites. No existing database is used. See [database foundation](docs/database.md).

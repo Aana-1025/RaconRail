@@ -8,6 +8,8 @@ A Java25/Spring Boot MVC application serves a React19/TypeScript interface built
 
 The Orbit design combines lilac, white and mint with product-related CSS artwork, readable task surfaces, native controls and reduced-motion support. The example is explicitly synthetic.
 
+Versioned PostgreSQL migrations and a disposable PostgreSQL18.7 verification suite now provide the database foundation. Application database connections and repositories are not wired yet.
+
 ## Planned capabilities
 
 Private personal workspaces, strict two-file JSON intake, PostgreSQL persistence and exact reconciliation rules are planned. Monetary comparisons use bounded integer representations and explicit currencies rather than floating-point arithmetic or inferred exchange rates.

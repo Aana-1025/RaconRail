@@ -28,3 +28,7 @@ jobs:
         run: python3 -m unittest discover -s ops -p 'test_*.py' -v
       - name: Verify build
         run: python3 ops/run_commands.py --suite build --task RR-02.2
+      - name: Fetch pinned PostgreSQL test image
+        run: docker pull postgres@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162593691c61bbc
+      - name: Verify database migrations and roles
+        run: python3 ops/run_commands.py --suite pg --task RR-03
