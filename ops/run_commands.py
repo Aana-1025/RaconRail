@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parent.parent
 def stamp(): return dt.datetime.now(dt.timezone.utc).isoformat()
 def execute(suite, task, *, root=ROOT, run=subprocess.run):
     manifest=json.loads((root/'ops/commands.json').read_text(encoding='utf-8'))
-    registry=json.loads((root/'harness/task-registry.json').read_text(encoding='utf-8'))
+    registry=json.loads((root/'ops/tasks.json').read_text(encoding='utf-8'))
     ids={t['id'] for t in registry['tasks']} | {w['id'] for t in registry['tasks'] for w in t['work_items']}
     output=root/'harness/evidence/commands'/dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
     output.mkdir(parents=True)
@@ -41,7 +41,7 @@ def execute(suite, task, *, root=ROOT, run=subprocess.run):
         if os.name=='nt' and local.exists():
             tools=json.loads(local.read_text())['tools'];java_home=root/tools['java']['home'];node=root/tools['node']['executable'];npm_cli=node.parent/'node_modules/npm/bin/npm-cli.js'
         else:
-            java_home=Path(env.get('JAVA_HOME','__JAVA_HOME_REQUIRED__'));node=Path(shutil.which('node') or '__NODE_REQUIRED__');npm=shutil.which('npm');npm_cli=Path(npm).resolve() if npm else Path('__NPM_REQUIRED__')
+            java_home=Path(env.get('JAVA_HOME','__JAVA_HOME_REQUIRED__'));node=Path(shutil.which('node') or '__NODE_REQUIRED__');npm=shutil.which('npm');npm_cli=(node.parent/'node_modules/npm/bin/npm-cli.js') if os.name=='nt' else (Path(npm).resolve() if npm else Path('__NPM_REQUIRED__'))
         suffix='.exe' if os.name=='nt' else ''
         java=java_home/('bin/java'+suffix);javac=java_home/('bin/javac'+suffix)
         if not all(p.is_file() for p in [java,javac,node,npm_cli]):return finish(2,'BLOCKED','Missing exact Java/Node/npm prerequisites')

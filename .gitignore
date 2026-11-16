@@ -29,3 +29,19 @@ __pycache__/
 # Local-only provenance directives, design studies and reference media
 /docs/references/*.txt
 /docs/07-frontend/previews/
+
+# Private development workspace records
+/AGENTS.md
+/GOALS.md
+/PLANS.md
+/PROMPTS.md
+/harness/
+/docs/*
+!/docs/product-architecture.md
+!/docs/04-apis-integrations/
+!/docs/07-frontend/
+/docs/04-apis-integrations/*.md
+/docs/04-apis-integrations/tools/
+/docs/04-apis-integrations/validation-report.json
+/docs/07-frontend/*
+!/docs/07-frontend/orbit-tokens.json

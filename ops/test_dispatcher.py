@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec=importlib.util.spec_from_file_location('rr',Path(__file__).with_name('run_commands.py'));rr=importlib.util.module_from_spec(spec);spec.loader.exec_module(rr)
 
@@ -12,7 +13,7 @@ class DispatcherPolicy(unittest.TestCase):
     def setup_tree(self,base):
         root=Path(base);(root/'ops').mkdir();(root/'harness').mkdir()
         manifest=json.loads((rr.ROOT/'ops/commands.json').read_text());(root/'ops/commands.json').write_text(json.dumps(manifest))
-        (root/'harness/task-registry.json').write_text(json.dumps({'tasks':[{'id':'RR-02','work_items':[{'id':'RR-02.2'}]}]}));return root,manifest
+        (root/'ops/tasks.json').write_text(json.dumps({'tasks':[{'id':'RR-02','work_items':[{'id':'RR-02.2'}]}]}));return root,manifest
     def test_every_unavailable_suite_and_unknown_task_refuse_without_running_commands(self):
         with tempfile.TemporaryDirectory() as directory:
             root,m=self.setup_tree(directory)
@@ -24,16 +25,16 @@ class DispatcherPolicy(unittest.TestCase):
     def test_failure_propagates_and_remaining_commands_do_not_run(self):
         with tempfile.TemporaryDirectory() as directory:
             root,m=self.setup_tree(directory)
-            # Real local prepared executables serve as identity-only fixture inputs.
-            if rr.os.name=='nt':
-                d=json.loads((rr.ROOT/'harness/local-toolchain.json').read_text())
-                for t in d['tools'].values():
-                    for k in ['home','executable']:
-                        if k in t:t[k]=str(rr.ROOT/t[k])
-                (root/'harness/local-toolchain.json').write_text(json.dumps(d))
+            tools=root/'tools';java_home=tools/'java';node=tools/('node.exe' if rr.os.name=='nt' else 'node')
+            npm_cli=tools/'node_modules/npm/bin/npm-cli.js'
+            for f in [java_home/('bin/java.exe' if rr.os.name=='nt' else 'bin/java'),java_home/('bin/javac.exe' if rr.os.name=='nt' else 'bin/javac'),node,npm_cli]:
+                f.parent.mkdir(parents=True,exist_ok=True);f.touch()
+            (root/'harness/local-toolchain.json').write_text(json.dumps({'tools':{'java':{'home':str(java_home)},'node':{'executable':str(node)}}}))
             calls=[]
             def fail(argv,**kwargs):calls.append(argv);return subprocess.CompletedProcess(argv,23)
-            self.assertEqual(23,rr.execute('build','RR-02.2',root=root,run=fail));self.assertEqual(1,len(calls))
+            with patch.dict(rr.os.environ,{'JAVA_HOME':str(java_home)}), patch.object(rr.shutil,'which',side_effect=lambda name: str(node if name=='node' else npm_cli)):
+                self.assertEqual(23,rr.execute('build','RR-02.2',root=root,run=fail))
+            self.assertEqual(1,len(calls))
 
     def test_missing_command_blocks_before_any_execution(self):
         with tempfile.TemporaryDirectory() as directory:
