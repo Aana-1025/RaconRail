@@ -32,4 +32,15 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile><id>database</id><build><plugins><plugin>
+      <groupId>org.flywaydb</groupId><artifactId>flyway-maven-plugin</artifactId><version>${flyway.version}</version>
+      <configuration><url>${env.RR_DB_URL}</url><user>${env.RR_DB_USER}</user><password>${env.RR_DB_PASSWORD}</password>
+        <locations><location>filesystem:src/main/resources/db/migration</location></locations>
+        <defaultSchema>rr_migrations</defaultSchema><initSql>SET ROLE rr_owner</initSql><createSchemas>false</createSchemas><cleanDisabled>true</cleanDisabled>
+      </configuration>
+      <dependencies><dependency><groupId>org.flywaydb</groupId><artifactId>flyway-database-postgresql</artifactId><version>${flyway.version}</version></dependency>
+        <dependency><groupId>org.postgresql</groupId><artifactId>postgresql</artifactId><version>${postgresql.version}</version></dependency></dependencies>
+    </plugin></plugins></build></profile>
+  </profiles>
 </project>
