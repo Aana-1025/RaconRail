@@ -1,0 +1,122 @@
+{
+  "status": "APPROVED_DESIGN_DOCUMENT",
+  "revision": "2026-11-16",
+  "color": {
+    "field": "#FBFAFF",
+    "paper": "#FFFFFF",
+    "raised": "#F5F1FC",
+    "lilac": "#EAE4FD",
+    "mintWash": "#E4F2EC",
+    "ink": "#34304C",
+    "secondary": "#70657E",
+    "primary": "#6150A9",
+    "primaryHover": "#51418E",
+    "onPrimary": "#FFFFFF",
+    "line": "#E5DEEE",
+    "controlBorder": "#8D819C",
+    "focus": "#53418E",
+    "attentionInk": "#925F22",
+    "attentionFill": "#FFF2DC",
+    "consistentInk": "#2B6957",
+    "consistentFill": "#E4F2EC",
+    "errorInk": "#A32D49",
+    "errorFill": "#FDECF0"
+  },
+  "type": {
+    "bodyFamily": "Segoe UI, Arial, sans-serif",
+    "valueFamily": "ui-monospace, SFMono-Regular, Consolas, monospace",
+    "heroPx": [
+      44,
+      76
+    ],
+    "pagePx": [
+      32,
+      44
+    ],
+    "sectionPx": 24,
+    "componentPx": 18,
+    "bodyPx": 16,
+    "dataPx": 14,
+    "metadataPx": 12,
+    "bodyLineHeight": 1.6,
+    "dataLineHeight": 1.5,
+    "weights": [
+      400,
+      500,
+      550,
+      600
+    ]
+  },
+  "spacePx": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64,
+    80
+  ],
+  "radiiPx": {
+    "field": 12,
+    "button": 24,
+    "panel": 24,
+    "sculpture": 28,
+    "pill": 999
+  },
+  "borderPx": 1,
+  "focus": {
+    "widthPx": 3,
+    "offsetPx": 3
+  },
+  "layout": {
+    "maxWidthPx": 1280,
+    "compactMaxExclusivePx": 640,
+    "wideMinPx": 1024,
+    "guttersPx": [
+      16,
+      24,
+      32
+    ],
+    "gapsPx": [
+      16,
+      20,
+      24
+    ],
+    "touchTargetPx": 44
+  },
+  "elevation": {
+    "paper": "0 4px 12px -8px rgba(74,55,104,0.16)",
+    "raised": "0 18px 36px -24px rgba(74,55,104,0.28)",
+    "sculpture": "0 30px 50px -26px rgba(74,55,104,0.38)",
+    "overlay": "0 32px 80px -24px rgba(52,48,76,0.32)"
+  },
+  "motion": {
+    "pressMs": 120,
+    "hoverMs": 180,
+    "routeMs": 220,
+    "spreadMs": 320,
+    "settleMs": 220,
+    "floatPeriodMs": [
+      8000,
+      12000
+    ],
+    "floatAmplitudePx": {
+      "wide": 4,
+      "compact": 2
+    },
+    "easing": [
+      0.2,
+      0.8,
+      0.2,
+      1
+    ],
+    "reduced": "instant state changes; no automatic movement",
+    "pauseAvailable": true
+  },
+  "approvalStatus": "APPROVED_D026"
+}
