@@ -49,3 +49,5 @@ __pycache__/
 !/docs/database.md
 
 !/docs/evidence-codecs.md
+
+!/docs/comparison-evaluator.md

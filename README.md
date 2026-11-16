@@ -6,7 +6,7 @@ Compare saved sandbox payment evidence with an independent application expectati
 
 The application currently provides a public overview, guide and interactive synthetic example in a packaged Java application. The Orbit interface uses CSS sculpture, floating evidence cards and motion controls. Sign-in, workspace, account and closure routes clearly indicate that their features are unavailable.
 
-The PostgreSQL migration foundation and isolated database verification are implemented. Authentication, uploads, application persistence wiring and the financial evaluator are planned. The example does not perform reconciliation or make financial correctness claims. No live payment integration is included.
+The PostgreSQL migration foundation and isolated database verification are implemented. Authentication, uploads, application persistence wiring and evaluator integration are planned. The example does not perform reconciliation or make financial correctness claims. No live payment integration is included.
 
 ## Build
 
@@ -56,4 +56,8 @@ Linux: `python3 ops/run_commands.py --suite pg --task RR-03`. The suite creates 
 
 ## Evidence codec core
 
-Strict pair validation, manifest-ordered canonical bytes and logical row accounting are implemented as pure modules. Exact scalar helpers are available in the frontend; there is no upload endpoint or financial evaluator yet. See [codec boundaries and verification](docs/evidence-codecs.md).
+Strict pair validation, manifest-ordered canonical bytes and logical row accounting are implemented as pure modules. Exact scalar helpers are available in the frontend; there is no upload endpoint or wired financial result workflow yet. See [codec boundaries and verification](docs/evidence-codecs.md).
+
+## Pure comparison evaluator
+
+The qualified comparison core now evaluates frozen saved evidence with separate state/currency/amount outcomes, exact integer money and conservative capture timing. It is not yet connected to application endpoints or financial result screens. See [comparison boundaries](docs/comparison-evaluator.md).

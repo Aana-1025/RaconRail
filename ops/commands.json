@@ -23,7 +23,7 @@
     },
     "domain": {
       "status": "BLOCKED",
-      "reason": "Financial evaluator and independent oracles not implemented."
+      "reason": "Pure evaluator implemented; full domain acceptance still lacks independent capture-profile and broader integration verification. RR-05 provides scoped pure evaluator evidence."
     },
     "pg": {
       "status": "IMPLEMENTED",
@@ -129,6 +129,17 @@
         "-Dtest=CodecTest",
         "test"
       ]
+    },
+    "domain-evaluator": {
+      "argv": [
+        "{wrapper}",
+        "--batch-mode",
+        "--settings",
+        ".mvn/settings.xml",
+        "-Dmaven.repo.local={maven_repo}",
+        "-Dtest=CodecTest,QualifiedEvaluatorTest",
+        "test"
+      ]
     }
   },
   "task_suites": {
@@ -142,7 +153,7 @@
           "npm-version",
           "domain-codec"
         ],
-        "scope": "RR-04 strict evidence/canonical/accounting core only; financial evaluator suite remains unavailable"
+        "scope": "RR-04 strict evidence/canonical/accounting core only; evaluator not included in this scope"
       }
     },
     "RR-04.1": {
@@ -155,7 +166,7 @@
           "npm-version",
           "domain-codec"
         ],
-        "scope": "RR-04 strict evidence/canonical/accounting core only; financial evaluator suite remains unavailable"
+        "scope": "RR-04 strict evidence/canonical/accounting core only; evaluator not included in this scope"
       }
     },
     "RR-04.2": {
@@ -168,7 +179,46 @@
           "npm-version",
           "domain-codec"
         ],
-        "scope": "RR-04 strict evidence/canonical/accounting core only; financial evaluator suite remains unavailable"
+        "scope": "RR-04 strict evidence/canonical/accounting core only; evaluator not included in this scope"
+      }
+    },
+    "RR-05": {
+      "domain": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "domain-evaluator"
+        ],
+        "scope": "RR-05 pure comparison evaluator and strict codec core; no HTTP/persistence/recovery acceptance"
+      }
+    },
+    "RR-05.1": {
+      "domain": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "domain-evaluator"
+        ],
+        "scope": "RR-05 pure comparison evaluator and strict codec core; no HTTP/persistence/recovery acceptance"
+      }
+    },
+    "RR-05.2": {
+      "domain": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "domain-evaluator"
+        ],
+        "scope": "RR-05 pure comparison evaluator and strict codec core; no HTTP/persistence/recovery acceptance"
       }
     }
   }

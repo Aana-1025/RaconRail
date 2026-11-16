@@ -1,0 +1,2638 @@
+{
+  "description": "Synthetic D-019 decision-table inputs and specified expected classifications; not real provider captures.",
+  "cases": [
+    {
+      "id": "DOM-AC-001",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-002",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "paid",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "CCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-003",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:00:30Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-004",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:01:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-005",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-006",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "40000000"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "40000000"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:01:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "40000000"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-007",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "900",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCD",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-008",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "INR",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DDM",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-009",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "jpy",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "jpy",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "JPY",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-010",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "ISK",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DUU",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-011",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "requires_capture",
+            "captureMethod": "manual",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "UUU",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-012",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic_async",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-013",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MMM",
+      "expectedCharges": 0,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-014",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_other",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MMM",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-015",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          },
+          {
+            "kind": "order",
+            "id": "order_second",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "AAA",
+      "expectedCharges": 1,
+      "expectedOrders": 2
+    },
+    {
+      "id": "DOM-AC-016",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          },
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "REJECT",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-017",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MMM",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-018",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "100",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "UUU",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-019",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "charge",
+            "id": "ch_failed",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "failed",
+            "paid": false,
+            "captured": false,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "0",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          },
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCC",
+      "expectedCharges": 2,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-020",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": []
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MMM",
+      "expectedCharges": 0,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-021",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1.5",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "REJECT",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-022",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          },
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "DCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-023",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "other_sandbox",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "60000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "REJECT",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    },
+    {
+      "id": "DOM-AC-024",
+      "provider": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "provider",
+        "sourceVersion": "2025-09-30.clover",
+        "records": [
+          {
+            "kind": "payment_intent",
+            "id": "pi_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "status": "succeeded",
+            "captureMethod": "automatic",
+            "amount": "1000",
+            "amountReceived": "1000",
+            "amountCapturable": "0",
+            "currency": "usd",
+            "latestChargeId": "ch_demo"
+          },
+          {
+            "kind": "charge",
+            "id": "ch_demo",
+            "observation": {
+              "readStart": "2026-01-01T09:59:59Z",
+              "readEnd": "2026-01-01T10:00:00Z",
+              "clockErrorUs": "0"
+            },
+            "paymentIntentId": "pi_demo",
+            "status": "succeeded",
+            "paid": true,
+            "captured": true,
+            "disputed": false,
+            "amount": "1000",
+            "amountCaptured": "1000",
+            "amountRefunded": "0",
+            "currency": "usd",
+            "actualMethodType": "card"
+          }
+        ]
+      },
+      "application": {
+        "schemaVersion": "rr-evidence-v1",
+        "captureId": "00000000-0000-4000-8000-000000000001",
+        "providerNamespace": {
+          "provider": "stripe",
+          "accountId": "acct_demo",
+          "sandboxId": "sandbox_demo",
+          "livemode": false
+        },
+        "appNamespace": {
+          "systemId": "demo_orders",
+          "environmentId": "sandbox"
+        },
+        "exporterVersion": "synthetic-example-v1",
+        "capturedAt": "2026-01-01T10:10:01Z",
+        "coverage": "selected",
+        "role": "application",
+        "sourceVersion": "rr-app-export-v1",
+        "records": [
+          {
+            "kind": "order",
+            "id": "order_demo",
+            "observation": {
+              "readStart": "2026-01-01T10:10:00Z",
+              "readEnd": "2026-01-01T10:10:01Z",
+              "clockErrorUs": "0"
+            },
+            "paymentReference": "pi_demo",
+            "paymentState": "awaiting_payment",
+            "rawPaymentState": "awaiting_payment",
+            "expectedAmount": "1000",
+            "expectedCurrency": "USD",
+            "expectationRevision": "rev1"
+          }
+        ]
+      },
+      "config": {
+        "graceUs": "700000000",
+        "flowDeclarations": {
+          "oneTime": true,
+          "fullOriginal": true,
+          "automaticCapture": true,
+          "noAdjustments": true,
+          "noSubscription": true,
+          "noConnect": true,
+          "noSplit": true
+        }
+      },
+      "expected": "MCC",
+      "expectedCharges": 1,
+      "expectedOrders": 1
+    }
+  ]
+}

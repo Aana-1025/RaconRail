@@ -32,7 +32,7 @@ export function canonical(domain: string, layout: string, value: unknown, layout
   function typed(type: string,v: unknown,depth: number){
     if(depth>16)return invalid();
     if(type.startsWith('object:')){output.push(8);object(type.slice(7),v,depth);return;}
-    if(type.startsWith('list:')){if(!Array.isArray(v)||v.length>10000)return invalid();output.push(7);u32(v.length);for(const item of v){if(item===null)return invalid();typed(type.slice(5),item,depth+1);}return;}
+    if(type.startsWith('list:')){if(!Array.isArray(v)||v.length>(type==='list:object:SemanticFinding'?60000:10000))return invalid();output.push(7);u32(v.length);for(const item of v){if(item===null)return invalid();typed(type.slice(5),item,depth+1);}return;}
     switch(type){
       case 'text':output.push(1);sized(text(v));break;
       case 'integer':if(typeof v!=='string'||!/^(?:0|-?[1-9][0-9]{0,37})$/.test(v)||/\s/.test(v))return invalid();output.push(2);sized(text(v));break;

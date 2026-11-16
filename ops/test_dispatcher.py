@@ -45,14 +45,14 @@ class DispatcherPolicy(unittest.TestCase):
             self.assertEqual(2,rr.execute('build','RR-02.2',root=root,run=forbidden))
 
 class ScopedSuitePolicy(unittest.TestCase):
-    def test_domain_override_is_limited_to_rr04(self):
+    def test_domain_overrides_remain_task_scoped(self):
         manifest=json.loads((rr.ROOT/'ops/commands.json').read_text())
         self.assertEqual('BLOCKED',manifest['suites']['domain']['status'])
-        self.assertEqual({'RR-04','RR-04.1','RR-04.2'},set(manifest['task_suites']))
+        self.assertEqual({'RR-04','RR-04.1','RR-04.2','RR-05','RR-05.1','RR-05.2'},set(manifest['task_suites']))
         self.assertEqual('BLOCKED',manifest['suites']['all']['status'])
         for task in manifest['task_suites']:
             suite=manifest['task_suites'][task]['domain']
-            self.assertIn('domain-codec',suite['commands'])
-            self.assertIn('financial evaluator suite remains unavailable',suite['scope'])
+            self.assertIn('domain-codec' if task.startswith('RR-04') else 'domain-evaluator',suite['commands'])
+            self.assertIn('evaluator not included in this scope' if task.startswith('RR-04') else 'no HTTP/persistence/recovery acceptance',suite['scope'])
 
 if __name__=='__main__':unittest.main()

@@ -22,4 +22,4 @@ Frontend exactMoney formats USD/INR with2 decimal digits and JPY with0 without c
 
 ## Verification
 
-`./ops/rr.ps1 verify -Suite domain -Task RR-04` runs the RR-04 codec core scope. The general domain evaluator and all suites remain blocked. `build` additionally checks the shell and packages static assets. Hosted CI and actual provider capture remain unverified.
+`./ops/rr.ps1 verify -Suite domain -Task RR-04` runs the RR-04 codec core scope. The global domain acceptance and all suites remain blocked; RR-05 provides a separate pure evaluator scope. `build` additionally checks the shell and packages static assets. Hosted CI and actual provider capture remain unverified.

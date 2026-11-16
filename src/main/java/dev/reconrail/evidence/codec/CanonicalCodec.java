@@ -24,7 +24,7 @@ public final class CanonicalCodec {
     private static void typed(DataOutputStream out,String type,Object value,int depth)throws IOException{
         if(depth>16)throw new EvidenceException();
         if(type.startsWith("object:")){out.writeByte(8);object(out,type.substring(7),StrictJson.object(value),depth);return;}
-        if(type.startsWith("list:")){if(!(value instanceof List<?> list)||list.size()>10000)throw new EvidenceException();out.writeByte(7);out.writeInt(list.size());for(Object item:list){if(item==null)throw new EvidenceException();typed(out,type.substring(5),item,depth+1);}return;}
+        if(type.startsWith("list:")){if(!(value instanceof List<?> list)||list.size()>(type.equals("list:object:SemanticFinding")?60000:10000))throw new EvidenceException();out.writeByte(7);out.writeInt(list.size());for(Object item:list){if(item==null)throw new EvidenceException();typed(out,type.substring(5),item,depth+1);}return;}
         switch(type){
             case "text" -> {if(!(value instanceof String s))throw new EvidenceException();out.writeByte(1);sized(out,StrictJson.validText(s).getBytes(StandardCharsets.UTF_8));}
             case "integer" -> {out.writeByte(2);sized(out,StrictJson.integer(value).toString().getBytes(StandardCharsets.US_ASCII));}

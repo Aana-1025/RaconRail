@@ -21,3 +21,5 @@ The MVP excludes live payment calls, webhooks, refunds, ledger functionality, te
 ## Verification boundaries
 
 The build verifies the application shell. Missing financial, persistence, authentication, fault-recovery and full workflow suites fail closed through the dispatcher. Hosted CI, production deployment and full accessibility/security acceptance remain unverified.
+
+The pure qualified comparison evaluator is implemented and tested; see [comparison boundaries](comparison-evaluator.md). HTTP/worker/persistence integration remains separate.
