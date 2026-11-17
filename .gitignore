@@ -52,3 +52,4 @@ __pycache__/
 
 !/docs/comparison-evaluator.md
 !/docs/authentication.md
+!/docs/lifecycle-authority.md

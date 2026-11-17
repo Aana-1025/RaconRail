@@ -146,6 +146,12 @@
         "{python}",
         "ops/verify_security.py"
       ]
+    },
+    "fault-integration": {
+      "argv": [
+        "{python}",
+        "ops/verify_fault.py"
+      ]
     }
   },
   "task_suites": {
@@ -267,6 +273,48 @@
           "security-integration"
         ],
         "scope": "RR-06 real local OIDC/JDBC/session/CSRF boundary; not hosted security or lifecycle-fence acceptance"
+      }
+    },
+    "RR-07": {
+      "fault": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "maven-verify",
+          "fault-integration"
+        ],
+        "scope": "RR-07 fair IoGate, real Servlet response writer, real nonowner PostgreSQL authority probe, synthetic-only local journal/denial/recovery ports; no worker/session/closure or independent hosted recovery proof"
+      }
+    },
+    "RR-07.1": {
+      "fault": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "maven-verify",
+          "fault-integration"
+        ],
+        "scope": "RR-07.1 account-generation, fair IoGate and real Servlet/PostgreSQL writer barriers"
+      }
+    },
+    "RR-07.2": {
+      "fault": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "maven-verify",
+          "fault-integration"
+        ],
+        "scope": "RR-07.2 synthetic-only forced local journal, ambiguous denial retry and independent-evidence recovery ports"
       }
     }
   }

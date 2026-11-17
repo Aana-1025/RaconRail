@@ -8,6 +8,7 @@ def main():
     stamp=time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())
     evidence=ROOT/'harness/evidence/pg'/stamp;evidence.mkdir(parents=True,exist_ok=False)
     checks=[];commands=[];container=None
+    fixture_only=os.environ.get('RR_SECURITY_ONLY')=='1' or os.environ.get('RR_FAULT_ONLY')=='1'
     def call(argv,*,input=None,env=None,ok=True):
         result=subprocess.run(argv,input=input,text=True,capture_output=True,cwd=ROOT,env=env,timeout=240)
         commands.append({'argv':argv,'exit_code':result.returncode})
@@ -55,15 +56,15 @@ def main():
                 log.write_text((result.stdout+result.stderr).replace(password,'[REDACTED]'),encoding='utf-8')
                 assert (result.returncode==0)==(expected==0),str(log)
                 return result
-            if os.environ.get('RR_SECURITY_ONLY')=='1':
-                check('fresh security fixture migration',lambda:flyway('migrate'))
+            if fixture_only:
+                check('fresh isolated fixture migration',lambda:flyway('migrate'))
             else:
                 check('predecessor V1 migration',lambda:flyway('migrate',['-Dflyway.target=1']))
                 check('upgrade V1 to complete schema',lambda:flyway('migrate'))
                 check('migration checksums validate',lambda:flyway('validate'))
             assert sql("SELECT count(*) FROM pg_tables WHERE schemaname='rr';")=='24'
             checks.append({'name':'24 application tables present','status':'PASS'})
-            if os.environ.get('RR_SECURITY_ONLY')!='1':
+            if not fixture_only:
                 # SQL acceptance fixtures run after real Flyway upgrade.
                 scope={'sql':sql,'check':check,'ROOT':ROOT,'container':container,'call':call}
                 exec((ROOT/'ops/db/acceptance.py').read_text(),scope)
@@ -88,7 +89,25 @@ def main():
                     from verify_oidc import verify
                     verify(ROOT,env,evidence)
                     checks.append({'name':'Real local Keycloak/OIDC server checks','status':'PASS'})
-            if os.environ.get('RR_SECURITY_ONLY')!='1':
+            if os.environ.get('RR_LIFECYCLE_TESTS')=='1':
+                account_id='00000000-0000-0000-0000-000000000701'
+                workspace_id='00000000-0000-0000-0000-000000000702'
+                case_id='00000000-0000-0000-0000-000000000703'
+                sql("CREATE ROLE rr_lifecycle_it LOGIN PASSWORD '"+password+"' IN ROLE rr_control;")
+                sql("INSERT INTO rr.account(account_id,state,generation) VALUES ('"+account_id+"','ACTIVE',7);"
+                    " INSERT INTO rr.workspace(workspace_id,account_id) VALUES ('"+workspace_id+"','"+account_id+"');"
+                    " INSERT INTO rr.case_record(workspace_id,case_id,state,generation,provider_namespace,app_namespace)"
+                    " VALUES ('"+workspace_id+"','"+case_id+"','ACTIVE',11,'{}','{}');")
+                env.update(RR_TEST_JDBC_URL=env['RR_DB_URL'],RR_TEST_JDBC_USER='rr_lifecycle_it',
+                    RR_TEST_JDBC_PASSWORD=password,RR_TEST_ACCOUNT_ID=account_id,
+                    RR_TEST_WORKSPACE_ID=workspace_id,RR_TEST_CASE_ID=case_id)
+                args=wrapper+['--batch-mode','--settings','.mvn/settings.xml','-Dmaven.repo.local='+str(ROOT/'.local-tools/m2/repository'),
+                    '-DargLine=-Duser.timezone=UTC','-Dtest=GatedHttpIT,LifecycleJdbcIT','test']
+                lifecycle=call(args,env=env,ok=False)
+                (evidence/'lifecycle-boundary-tests.log').write_text((lifecycle.stdout+lifecycle.stderr).replace(password,'[REDACTED]'),encoding='utf-8')
+                assert lifecycle.returncode==0,'Actual HTTP/JDBC lifecycle boundary tests failed; see local evidence'
+                checks.append({'name':'Actual Servlet response and nonowner PostgreSQL authority boundaries','status':'PASS'})
+            if not fixture_only:
                 # A separate empty database proves a direct fresh installation.
                 sql('CREATE DATABASE reconrail_fresh OWNER rr_owner;')
                 env['RR_DB_URL']=env['RR_DB_URL'].replace('/reconrail','/reconrail_fresh')
@@ -102,7 +121,8 @@ def main():
         if container:
             # Only the exact container created by this invocation is removed.
             result=call(['docker','rm','--force',container],ok=False);cleanup='REMOVED' if result.returncode==0 else 'FAILED'
-        record={'scope':'security-fixture-only' if os.environ.get('RR_SECURITY_ONLY')=='1' else 'full-pg', 'status':locals().get('status','FAIL'),'checks':checks,'commands':commands,'image':locals().get('image'),'postgres_version':locals().get('version'),'cleanup':cleanup,'migration_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'src/main/resources/db/migration').glob('*.sql')}}
+        scope_name='security-fixture-only' if os.environ.get('RR_SECURITY_ONLY')=='1' else ('lifecycle-fixture-only' if os.environ.get('RR_FAULT_ONLY')=='1' else 'full-pg')
+        record={'scope':scope_name, 'status':locals().get('status','FAIL'),'checks':checks,'commands':commands,'image':locals().get('image'),'postgres_version':locals().get('version'),'cleanup':cleanup,'migration_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'src/main/resources/db/migration').glob('*.sql')}}
         (evidence/'manifest.json').write_text(json.dumps(record,indent=2)+'\n');print(str(evidence),flush=True)
         if cleanup=='FAILED':raise RuntimeError('Owned test container cleanup failed')
 
