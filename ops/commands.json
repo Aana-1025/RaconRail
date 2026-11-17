@@ -37,7 +37,7 @@
     },
     "security": {
       "status": "BLOCKED",
-      "reason": "Full authentication/authorization/session/tenant verification unavailable."
+      "reason": "RR-06 provides scoped local authentication/session verification; full hosted authorization, lifecycle and security acceptance remain unavailable."
     },
     "fault": {
       "status": "BLOCKED",
@@ -140,6 +140,12 @@
         "-Dtest=CodecTest,QualifiedEvaluatorTest",
         "test"
       ]
+    },
+    "security-integration": {
+      "argv": [
+        "{python}",
+        "ops/verify_security.py"
+      ]
     }
   },
   "task_suites": {
@@ -219,6 +225,48 @@
           "domain-evaluator"
         ],
         "scope": "RR-05 pure comparison evaluator and strict codec core; no HTTP/persistence/recovery acceptance"
+      }
+    },
+    "RR-06": {
+      "security": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "maven-verify",
+          "security-integration"
+        ],
+        "scope": "RR-06 real local OIDC/JDBC/session/CSRF boundary; not hosted security or lifecycle-fence acceptance"
+      }
+    },
+    "RR-06.1": {
+      "security": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "maven-verify",
+          "security-integration"
+        ],
+        "scope": "RR-06 real local OIDC/JDBC/session/CSRF boundary; not hosted security or lifecycle-fence acceptance"
+      }
+    },
+    "RR-06.2": {
+      "security": {
+        "status": "IMPLEMENTED",
+        "commands": [
+          "java-version",
+          "javac-version",
+          "node-version",
+          "npm-version",
+          "maven-verify",
+          "security-integration"
+        ],
+        "scope": "RR-06 real local OIDC/JDBC/session/CSRF boundary; not hosted security or lifecycle-fence acceptance"
       }
     }
   }

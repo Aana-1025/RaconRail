@@ -28,6 +28,7 @@ def main():
         image=call(['docker','image','inspect',IMAGE,'--format','{{.Id}}']).stdout.strip()
         name='rr-pg-'+uuid.uuid4().hex[:12]
         (ROOT/'tmp').mkdir(exist_ok=True)
+        if not (ROOT/'tmp').resolve().is_relative_to(ROOT):raise RuntimeError('Unsafe temporary root')
         with tempfile.TemporaryDirectory(prefix='rr-pg-',dir=ROOT/'tmp') as directory:
             temp=Path(directory);password=secrets.token_urlsafe(32)
             envfile=temp/'postgres.env';envfile.write_text('POSTGRES_PASSWORD='+password+'\nPOSTGRES_DB=reconrail\n')
@@ -45,6 +46,7 @@ def main():
             if os.name=='nt' and local.exists():
                 tool=json.loads(local.read_text())['tools'];env['JAVA_HOME']=str(ROOT/tool['java']['home'])
                 env['PATH']=str(Path(env['JAVA_HOME'])/'bin')+os.pathsep+env['PATH']
+                node=ROOT/tool['node']['executable'];env['RR_NODE']=str(node);env['RR_NPM_CLI']=str(node.parent/'node_modules/npm/bin/npm-cli.js')
             env.update(RR_DB_URL='jdbc:postgresql://127.0.0.1:'+port+'/reconrail',RR_DB_USER='rr_migrator',RR_DB_PASSWORD=password,MAVEN_USER_HOME=str(ROOT/'.local-tools/maven-user'))
             wrapper=[str(ROOT/'mvnw.cmd')] if os.name=='nt' else ['sh',str(ROOT/'mvnw')]
             def flyway(goal,extra=(),expected=0):
@@ -53,28 +55,45 @@ def main():
                 log.write_text((result.stdout+result.stderr).replace(password,'[REDACTED]'),encoding='utf-8')
                 assert (result.returncode==0)==(expected==0),str(log)
                 return result
-            check('predecessor V1 migration',lambda:flyway('migrate',['-Dflyway.target=1']))
-            check('upgrade V1 to complete schema',lambda:flyway('migrate'))
-            check('migration checksums validate',lambda:flyway('validate'))
+            if os.environ.get('RR_SECURITY_ONLY')=='1':
+                check('fresh security fixture migration',lambda:flyway('migrate'))
+            else:
+                check('predecessor V1 migration',lambda:flyway('migrate',['-Dflyway.target=1']))
+                check('upgrade V1 to complete schema',lambda:flyway('migrate'))
+                check('migration checksums validate',lambda:flyway('validate'))
             assert sql("SELECT count(*) FROM pg_tables WHERE schemaname='rr';")=='24'
             checks.append({'name':'24 application tables present','status':'PASS'})
-            # SQL acceptance fixtures run after real Flyway upgrade.
-            scope={'sql':sql,'check':check,'ROOT':ROOT,'container':container,'call':call}
-            exec((ROOT/'ops/db/acceptance.py').read_text(),scope)
-            broken=temp/'broken';broken.mkdir();(broken/'V999__failure_probe.sql').write_text('CREATE TABLE rr.rollback_probe(id int); SELECT 1/0;')
-            locations='-Dflyway.locations=filesystem:src/main/resources/db/migration,filesystem:'+str(broken)
-            check('failed Flyway DDL rolls back',lambda:flyway('migrate',[locations],expected=1))
-            assert sql("SELECT to_regclass('rr.rollback_probe') IS NULL;")=='t'
-            assert sql("SELECT count(*) FROM rr_migrations.flyway_schema_history WHERE version='999';")=='0'
-            altered=temp/'altered';shutil.copytree(ROOT/'src/main/resources/db/migration',altered)
-            with (altered/'V1__identity_and_control.sql').open('a') as f:f.write('\n-- checksum mismatch probe\n')
-            check('changed applied migration rejected',lambda:flyway('validate',['-Dflyway.locations=filesystem:'+str(altered)],expected=1))
-            check('original migration checksums intact',lambda:flyway('validate'))
-            # A separate empty database proves a direct fresh installation.
-            sql('CREATE DATABASE reconrail_fresh OWNER rr_owner;')
-            env['RR_DB_URL']=env['RR_DB_URL'].replace('/reconrail','/reconrail_fresh')
-            call(['docker','exec','-i',container,'psql','-X','-v','ON_ERROR_STOP=1','-U','postgres','-d','reconrail_fresh'],input='CREATE SCHEMA rr_migrations AUTHORIZATION rr_owner;')
-            check('fresh complete migration',lambda:flyway('migrate'))
+            if os.environ.get('RR_SECURITY_ONLY')!='1':
+                # SQL acceptance fixtures run after real Flyway upgrade.
+                scope={'sql':sql,'check':check,'ROOT':ROOT,'container':container,'call':call}
+                exec((ROOT/'ops/db/acceptance.py').read_text(),scope)
+                broken=temp/'broken';broken.mkdir();(broken/'V999__failure_probe.sql').write_text('CREATE TABLE rr.rollback_probe(id int); SELECT 1/0;')
+                locations='-Dflyway.locations=filesystem:src/main/resources/db/migration,filesystem:'+str(broken)
+                check('failed Flyway DDL rolls back',lambda:flyway('migrate',[locations],expected=1))
+                assert sql("SELECT to_regclass('rr.rollback_probe') IS NULL;")=='t'
+                assert sql("SELECT count(*) FROM rr_migrations.flyway_schema_history WHERE version='999';")=='0'
+                altered=temp/'altered';shutil.copytree(ROOT/'src/main/resources/db/migration',altered)
+                with (altered/'V1__identity_and_control.sql').open('a') as f:f.write('\n-- checksum mismatch probe\n')
+                check('changed applied migration rejected',lambda:flyway('validate',['-Dflyway.locations=filesystem:'+str(altered)],expected=1))
+                check('original migration checksums intact',lambda:flyway('validate'))
+            if os.environ.get('RR_ACCESS_TESTS')=='1':
+                sql("CREATE ROLE rr_control_it LOGIN PASSWORD '"+password+"' IN ROLE rr_control;")
+                env.update(RR_TEST_JDBC_URL=env['RR_DB_URL'],RR_TEST_JDBC_USER='rr_control_it',RR_TEST_JDBC_PASSWORD=password)
+                args=wrapper+['--batch-mode','--settings','.mvn/settings.xml','-Dmaven.repo.local='+str(ROOT/'.local-tools/m2/repository'),'-DargLine=-Duser.timezone=UTC','-Dtest=JdbcSessionsIT','test']
+                access=call(args,env=env,ok=False)
+                (evidence/'jdbc-session-tests.log').write_text((access.stdout+access.stderr).replace(password,'[REDACTED]'),encoding='utf-8')
+                assert access.returncode==0,'Actual JDBC session tests failed; see local evidence'
+                checks.append({'name':'Actual nonowner Spring Session JDBC tests','status':'PASS'})
+                if os.environ.get('RR_OIDC_TESTS')=='1':
+                    from verify_oidc import verify
+                    verify(ROOT,env,evidence)
+                    checks.append({'name':'Real local Keycloak/OIDC server checks','status':'PASS'})
+            if os.environ.get('RR_SECURITY_ONLY')!='1':
+                # A separate empty database proves a direct fresh installation.
+                sql('CREATE DATABASE reconrail_fresh OWNER rr_owner;')
+                env['RR_DB_URL']=env['RR_DB_URL'].replace('/reconrail','/reconrail_fresh')
+                call(['docker','exec','-i',container,'psql','-X','-v','ON_ERROR_STOP=1','-U','postgres','-d','reconrail_fresh'],input='CREATE SCHEMA rr_migrations AUTHORIZATION rr_owner;')
+                check('fresh complete migration',lambda:flyway('migrate'))
         status='PASS'
     except Exception as error:
         status='FAIL';checks.append({'name':'verification failure','status':'FAIL','reason':str(error)});raise
@@ -83,7 +102,7 @@ def main():
         if container:
             # Only the exact container created by this invocation is removed.
             result=call(['docker','rm','--force',container],ok=False);cleanup='REMOVED' if result.returncode==0 else 'FAILED'
-        record={'status':locals().get('status','FAIL'),'checks':checks,'commands':commands,'image':locals().get('image'),'postgres_version':locals().get('version'),'cleanup':cleanup,'migration_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'src/main/resources/db/migration').glob('*.sql')}}
+        record={'scope':'security-fixture-only' if os.environ.get('RR_SECURITY_ONLY')=='1' else 'full-pg', 'status':locals().get('status','FAIL'),'checks':checks,'commands':commands,'image':locals().get('image'),'postgres_version':locals().get('version'),'cleanup':cleanup,'migration_sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'src/main/resources/db/migration').glob('*.sql')}}
         (evidence/'manifest.json').write_text(json.dumps(record,indent=2)+'\n');print(str(evidence),flush=True)
         if cleanup=='FAILED':raise RuntimeError('Owned test container cleanup failed')
 

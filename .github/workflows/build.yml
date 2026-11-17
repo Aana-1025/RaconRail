@@ -32,3 +32,9 @@ jobs:
         run: docker pull postgres@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162593691c61bbc
       - name: Verify database migrations and roles
         run: python3 ops/run_commands.py --suite pg --task RR-03
+      - name: Install pinned authentication test dependency
+        run: python3 -m pip install --requirement ops/test-requirements.txt
+      - name: Fetch pinned local identity test image
+        run: docker pull quay.io/keycloak/keycloak@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0
+      - name: Verify local authentication boundary
+        run: python3 ops/run_commands.py --suite security --task RR-06

@@ -4,9 +4,9 @@ Compare saved sandbox payment evidence with an independent application expectati
 
 ## Current status
 
-The application currently provides a public overview, guide and interactive synthetic example in a packaged Java application. The Orbit interface uses CSS sculpture, floating evidence cards and motion controls. Sign-in, workspace, account and closure routes clearly indicate that their features are unavailable.
+The application provides a public overview, guide and interactive synthetic example in a packaged Java application. The Orbit interface uses CSS sculpture, floating evidence cards and motion controls. Configured environments support OIDC sign-in and local sign-out; the default preview keeps sign-in unavailable. Private investigation, account and closure workflows are still being prepared.
 
-The PostgreSQL migration foundation and isolated database verification are implemented. Authentication, uploads, application persistence wiring and evaluator integration are planned. The example does not perform reconciliation or make financial correctness claims. No live payment integration is included.
+PostgreSQL migrations, bounded JDBC sessions and the pure comparison core are implemented. Uploads, investigation persistence wiring and evaluator integration remain planned. The example does not perform reconciliation or make financial correctness claims. No live payment integration is included.
 
 ## Build
 
@@ -36,7 +36,7 @@ Open http://127.0.0.1:8080/. The default bind address is loopback. Routes includ
 
 ## Design and contracts
 
-See [product architecture](docs/product-architecture.md), [API specification](docs/04-apis-integrations/openapi.json) and [design tokens](docs/07-frontend/orbit-tokens.json). API contracts describe intended behavior; only the shell is currently implemented.
+See [product architecture](docs/product-architecture.md), [API specification](docs/04-apis-integrations/openapi.json) and [design tokens](docs/07-frontend/orbit-tokens.json). API contracts describe intended behavior; only the documented shell and session endpoints are currently wired.
 
 See [third-party dependencies](THIRD_PARTY.md) for dependency and notice information.
 
@@ -61,3 +61,7 @@ Strict pair validation, manifest-ordered canonical bytes and logical row account
 ## Pure comparison evaluator
 
 The qualified comparison core now evaluates frozen saved evidence with separate state/currency/amount outcomes, exact integer money and conservative capture timing. It is not yet connected to application endpoints or financial result screens. See [comparison boundaries](docs/comparison-evaluator.md).
+
+## Authentication
+
+See [authentication configuration and limits](docs/authentication.md) for the explicit authentication profile, local integration command and session boundaries. Local synthetic checks do not establish hosted security or account-closure readiness.

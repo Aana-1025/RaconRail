@@ -32,7 +32,7 @@ export function Landing() {
     <section className={styles.workflow} aria-labelledby="workflow-title"><div><p className={styles.eyebrow}>Follow the evidence</p><h2 id="workflow-title">A little context.<br/>A different perspective.</h2></div>
       <ol><li><span>01</span><h3>Bring both stories</h3><p>A saved provider observation and an independent application expectation.</p></li><li><span>02</span><h3>Review the context</h3><p>Check the exact links, supported flow and declared observation windows.</p></li><li><span>03</span><h3>Understand each finding</h3><p>Inspect what the evidence supports, and what remains unknown.</p></li></ol>
     </section>
-    <section className={styles.scope}><span className={styles.scopeIcon} aria-hidden="true">◎</span><div><h2>A clearer view, with clear boundaries.</h2><p>ReconRail compares saved sandbox evidence. A comparison does not establish source authenticity, diagnose a cause or repair a payment. Private investigations and sign-in are not available in this build.</p></div><Link className={styles.secondary} to="/guide">Read the guide <Arrow/></Link></section>
+    <section className={styles.scope}><span className={styles.scopeIcon} aria-hidden="true">◎</span><div><h2>A clearer view, with clear boundaries.</h2><p>ReconRail compares saved sandbox evidence. A comparison does not establish source authenticity, diagnose a cause or repair a payment. Private investigations are being prepared. Sign-in availability depends on the configured environment.</p></div><Link className={styles.secondary} to="/guide">Read the guide <Arrow/></Link></section>
   </>;
 }
 
@@ -95,7 +95,7 @@ export function Example() {
   return <><header className={styles.exampleHeading}><p className={styles.eyebrow}>Look closer</p><h1 tabIndex={-1}>Two perspectives, side by side.</h1><p>Explore a fixed synthetic illustration. Select a source, change perspective or turn the comparison lens.</p></header><EvidencePlayground/></>;
 }
 export function Unavailable() {
-  return <section className={styles.document}><p className={styles.eyebrow}>Development shell</p><h1 tabIndex={-1}>Your workspace is coming next.</h1><p className={styles.lead}>Private investigations are not available in this build.</p><p>Authentication, evidence intake and account lifecycle controls are not implemented yet. No account is signed in, no evidence is stored, and this page cannot accept files or credentials.</p><div className={styles.actions}><Link className={styles.primary} to="/example">Explore the synthetic example <Arrow/></Link><Link className={styles.secondary} to="/guide">Read the guide</Link></div></section>;
+  return <section className={styles.document}><p className={styles.eyebrow}>Development shell</p><h1 tabIndex={-1}>Your workspace is coming next.</h1><p className={styles.lead}>Private investigations are not available in this build.</p><p>Evidence intake and account lifecycle controls are being prepared. This page cannot accept files or credentials. Visit sign-in to check your local session.</p><div className={styles.actions}><Link className={styles.primary} to="/example">Explore the synthetic example <Arrow/></Link><Link className={styles.secondary} to="/guide">Read the guide</Link></div></section>;
 }
 export function MissingPage() {
   return <section className={styles.document}><p className={styles.eyebrow}>Page unavailable</p><h1 tabIndex={-1}>Let’s find your way back.</h1><p>This page is not part of the current shell.</p><Link className={styles.primary} to="/">Return to overview <Arrow/></Link></section>;

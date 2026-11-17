@@ -1,0 +1,10 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import styles from './shell.module.css';
+import { SessionTransport, type SessionInfo } from './session-transport';
+export function SignIn({transport}:{transport:SessionTransport}) {
+  const [enabled,setEnabled]=useState<boolean>();const [session,setSession]=useState<SessionInfo>();const [notice,setNotice]=useState('');
+  useEffect(()=>{let active=true;const unsubscribe=transport.subscribe(info=>{if(active)setSession(info);});const controller=new AbortController();void fetch('/api/auth/availability',{cache:'no-store',credentials:'same-origin',signal:controller.signal}).then(r=>r.ok?r.json():{enabled:false}).then((v:{enabled:boolean})=>{if(!active)return;setEnabled(v.enabled===true);if(v.enabled)void transport.session().then(info=>{if(active)setSession(info);}).catch(()=>{/* A concurrent navigation may invalidate this session read. Availability is independent. */});}).catch(()=>{if(active)setEnabled(false);});return()=>{active=false;unsubscribe();controller.abort();};},[transport]);
+  const logout=async()=>{try{await transport.logout();setSession(undefined);setNotice('You signed out of ReconRail on this browser.');}catch{setSession(undefined);setNotice('Your local view was cleared. Please check your session before continuing.');}};
+  return <section className={styles.document}><p className={styles.eyebrow}>Your private workspace</p><h1 tabIndex={-1}>Welcome to ReconRail.</h1>{enabled===undefined?<p>Checking sign-in availability…</p>:enabled?session?<><p>You’re signed in to ReconRail. Private investigation tools are still being prepared.</p><button className={styles.secondary} onClick={()=>void logout()}>Sign out of ReconRail</button></>:<><p>Continue through the configured identity provider to access your private workspace.</p><a className={styles.primary} href="/oauth2/authorization/reconrail">Continue to sign in</a></>:<><p>Sign-in isn’t available in this preview. You can explore the guided example.</p><Link className={styles.primary} to="/example">Explore the example</Link></>}<p role="status">{notice}</p></section>;
+}

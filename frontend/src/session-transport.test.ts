@@ -1,0 +1,9 @@
+import { expect, it, vi } from 'vitest';
+import { SessionTransport } from './session-transport';
+const info={accountId:'a',workspaceId:'w',sessionGeneration:'1',expiresAt:'later',capabilities:[]};
+it('clears private state when authority expires',async()=>{const clear=vi.fn();const request=vi.fn().mockResolvedValue(new Response('',{status:401}));await new SessionTransport(clear,request).session();expect(clear).toHaveBeenCalledOnce();});
+it('discards a late response after invalidation',async()=>{let resolve!:(r:Response)=>void;const request=vi.fn().mockImplementation(()=>new Promise<Response>(r=>{resolve=r;}));const transport=new SessionTransport(vi.fn(),request);const pending=transport.session();transport.invalidate();resolve(Response.json(info));await expect(pending).rejects.toThrow('STALE_SESSION_RESPONSE');});
+it('account generation changes clear the private cache',async()=>{const clear=vi.fn();const request=vi.fn().mockResolvedValueOnce(Response.json(info)).mockResolvedValueOnce(Response.json({...info,sessionGeneration:'2'}));const transport=new SessionTransport(clear,request);await transport.session();await expect(transport.session()).rejects.toThrow('SESSION_CHANGED');expect(clear).toHaveBeenCalledOnce();});
+it('logout uses memory-only CSRF and never automatically replays',async()=>{const request=vi.fn().mockResolvedValueOnce(Response.json({token:'opaque',headerName:'X-CSRF-TOKEN'})).mockResolvedValueOnce(new Response(null,{status:204}));const clear=vi.fn();await new SessionTransport(clear,request).logout();expect(request).toHaveBeenCalledTimes(2);expect(request.mock.calls[1][1].headers).toEqual({'X-CSRF-TOKEN':'opaque'});expect(clear).toHaveBeenCalledOnce();});
+
+it('failed CSRF bootstrap still clears the private view',async()=>{const clear=vi.fn();const transport=new SessionTransport(clear,vi.fn().mockRejectedValue(new Error('offline')));await expect(transport.logout()).rejects.toThrow();expect(clear).toHaveBeenCalledOnce();});

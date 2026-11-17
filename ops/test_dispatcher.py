@@ -48,9 +48,14 @@ class ScopedSuitePolicy(unittest.TestCase):
     def test_domain_overrides_remain_task_scoped(self):
         manifest=json.loads((rr.ROOT/'ops/commands.json').read_text())
         self.assertEqual('BLOCKED',manifest['suites']['domain']['status'])
-        self.assertEqual({'RR-04','RR-04.1','RR-04.2','RR-05','RR-05.1','RR-05.2'},set(manifest['task_suites']))
+        self.assertEqual({'RR-04','RR-04.1','RR-04.2','RR-05','RR-05.1','RR-05.2','RR-06','RR-06.1','RR-06.2'},set(manifest['task_suites']))
         self.assertEqual('BLOCKED',manifest['suites']['all']['status'])
         for task in manifest['task_suites']:
+            if task.startswith('RR-06'):
+                suite=manifest['task_suites'][task]['security']
+                self.assertIn('security-integration',suite['commands'])
+                self.assertIn('not hosted security',suite['scope'])
+                continue
             suite=manifest['task_suites'][task]['domain']
             self.assertIn('domain-codec' if task.startswith('RR-04') else 'domain-evaluator',suite['commands'])
             self.assertIn('evaluator not included in this scope' if task.startswith('RR-04') else 'no HTTP/persistence/recovery acceptance',suite['scope'])
